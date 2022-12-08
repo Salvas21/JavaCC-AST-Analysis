@@ -50,15 +50,21 @@ PARSER_BEGIN(JavaParser)
 package parser;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import helpers.MethodCalls;
 
 public class JavaParser
 {
 
    private InputStream inputStream = null;
+   private static List<MethodCalls> callsOfMethods;
+   private static MethodCalls currentMethodCall;
 
     /**
      * Constructor for JavaParser.
-     * @param fileName name of the file to parse
+     * @param filename name of the file to parse
      */
    public JavaParser(String filename)
    {
@@ -96,6 +102,8 @@ public class JavaParser
   // for f in /some/directory/full/of/java/files/*.java; do java -cp . JavaParser $f; done
   public static void main(String args[]) {
     JavaParser parser;
+    callsOfMethods = new ArrayList<MethodCalls>();
+    currentMethodCall = null;
     if (args.length == 0) {
       System.out.println("Java Parser Version 1.7:  Reading from standard input...");
       parser = new JavaParser(System.in);
@@ -116,11 +124,21 @@ public class JavaParser
     }
     try {
       parser.CompilationUnit();
+      
+      if (currentMethodCall.hasMethodName()) {
+      	callsOfMethods.add(currentMethodCall);
+      }
+      for (MethodCalls call : callsOfMethods) {
+      	call.print();
+      }
+      
+      
       System.out.println("Java Parser Version 1.7:  Java program parsed successfully.");
     } catch (ParseException e) {
       System.out.println(e.getMessage());
       System.out.println("Java Parser Version 1.7:  Encountered errors during parse.");
     }
+    
   }
   
   
@@ -545,13 +563,14 @@ void TypeDeclaration():
 
 void ClassOrInterfaceDeclaration():
 {
+	Token className;
 }
 {
     
       ( 
           "class" | "interface" 
       )
-      <IDENTIFIER>
+      className=<IDENTIFIER> {currentMethodCall = new MethodCalls(); currentMethodCall.setClassName(className.toString());}
       [ TypeParameters() ]
       [ ExtendsList() ]
       [ ImplementsList() ]
@@ -770,6 +789,7 @@ void ArrayInitializer():
 
 void MethodDeclaration():
 {
+ // TODO : methods start here
 }
 {
     
@@ -784,11 +804,21 @@ void MethodDeclaration():
 
 void MethodDeclarator():
 {
+ Token methodName;
 }
 {
     
         (
-            <IDENTIFIER> FormalParameters() ( "[" "]" )*
+            methodName=<IDENTIFIER> FormalParameters() ( "[" "]" )* {
+            
+            	if (currentMethodCall.hasMethodName()) {
+            		callsOfMethods.add(currentMethodCall);
+            		String className = currentMethodCall.getClassName();
+            		currentMethodCall = new MethodCalls();
+            		currentMethodCall.setClassName(className);
+            	}
+            	currentMethodCall.setMethodName(methodName.toString());
+            }
         )
 }
 
@@ -887,6 +917,8 @@ void ReferenceType():
 
 void ClassOrInterfaceType():
 {
+ // TODO : get variable or class ?
+
 }
 {
     
@@ -981,14 +1013,15 @@ void Name():
  * by a ".*" when used in the context of an "ImportDeclaration".
  */
 {
+	Token varName;
+	Token methodName;
+	//{System.out.println(varName + " " + methodName);}
 }
 {
-    
-
-        <IDENTIFIER>
+        varName=<IDENTIFIER>
         (
             LOOKAHEAD(2)
-            "." <IDENTIFIER>
+            "." methodName=<IDENTIFIER> {currentMethodCall.addCallee(methodName.toString());}
         )*
 }
 
@@ -1423,6 +1456,7 @@ void LabeledStatement():
 
 void Block():
 {
+ // TODO : block declaration of methods
 }
 {
     
