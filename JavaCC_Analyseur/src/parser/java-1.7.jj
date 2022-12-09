@@ -43,7 +43,7 @@ options {
   JAVA_UNICODE_ESCAPE = true;
   //ERROR_REPORTING = true;
   STATIC = false;
-  //DEBUG_PARSER = true;
+  DEBUG_PARSER = true;
 }
 
 PARSER_BEGIN(JavaParser)
@@ -124,14 +124,8 @@ public class JavaParser
     }
     try {
       parser.CompilationUnit();
-      
-      if (currentMethodCall.hasMethodName()) {
-      	callsOfMethods.add(currentMethodCall);
-      }
-      for (MethodCalls call : callsOfMethods) {
-      	call.print();
-      }
-      
+
+	 	printMethodCallsResult();
       
       System.out.println("Java Parser Version 1.7:  Java program parsed successfully.");
     } catch (ParseException e) {
@@ -139,6 +133,15 @@ public class JavaParser
       System.out.println("Java Parser Version 1.7:  Encountered errors during parse.");
     }
     
+  }
+  
+  private static void printMethodCallsResult() {
+  	  if (currentMethodCall.hasMethodName()) {
+      	callsOfMethods.add(currentMethodCall);
+      }
+      for (MethodCalls call : callsOfMethods) {
+      	call.print();
+      }
   }
   
   
@@ -1014,15 +1017,15 @@ void Name():
  */
 {
 	Token varName;
-	Token methodName;
-	//{System.out.println(varName + " " + methodName);}
+	Token methodName = null;
 }
 {
         varName=<IDENTIFIER>
         (
             LOOKAHEAD(2)
-            "." methodName=<IDENTIFIER> {currentMethodCall.addCallee(methodName.toString());}
+            "." methodName=<IDENTIFIER>
         )*
+        {if (methodName != null) currentMethodCall.addCallee(methodName.toString());}
 }
 
 void NameList():
@@ -1296,6 +1299,7 @@ void PrimaryPrefix():
 
 void PrimarySuffix():
 {
+	Token weirdMethod;
 }
 {
     
@@ -1310,7 +1314,7 @@ void PrimarySuffix():
         |
           "[" Expression() "]"
         |
-          "." <IDENTIFIER>
+          "." weirdMethod=<IDENTIFIER> {currentMethodCall.addCallee(weirdMethod.toString());}
         |
           Arguments()
 }
