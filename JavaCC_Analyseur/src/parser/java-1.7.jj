@@ -52,15 +52,21 @@ package parser;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import helpers.MethodCalls;
+import helpers.ClassMethodInfo;
+import helpers.Storage;
+import helpers.Variable;
 
 public class JavaParser
 {
 
    private InputStream inputStream = null;
-   private static List<MethodCalls> callsOfMethods;
-   private static MethodCalls currentMethodCall;
+
+   private static ArrayList<ClassMethodInfo> classMethodInfos = new ArrayList<ClassMethodInfo>();
+   private static Stack<ClassMethodInfo> currentClassMethodInfo = new Stack<ClassMethodInfo>();
+   private static Stack<MethodCalls> currentMethodCalls = new Stack<MethodCalls>();
 
     /**
      * Constructor for JavaParser.
@@ -102,8 +108,6 @@ public class JavaParser
   // for f in /some/directory/full/of/java/files/*.java; do java -cp . JavaParser $f; done
   public static void main(String args[]) {
     JavaParser parser;
-    callsOfMethods = new ArrayList<MethodCalls>();
-    currentMethodCall = null;
     if (args.length == 0) {
       System.out.println("Java Parser Version 1.7:  Reading from standard input...");
       parser = new JavaParser(System.in);
@@ -125,7 +129,7 @@ public class JavaParser
     try {
       parser.CompilationUnit();
 
-	 	printMethodCallsResult();
+      printMethodCallsResult();
       
       System.out.println("Java Parser Version 1.7:  Java program parsed successfully.");
     } catch (ParseException e) {
@@ -136,13 +140,36 @@ public class JavaParser
   }
   
   private static void printMethodCallsResult() {
-  	  if (currentMethodCall.hasMethodName()) {
-      	callsOfMethods.add(currentMethodCall);
-      }
-      for (MethodCalls call : callsOfMethods) {
-      	call.print();
+  	  for (var info : classMethodInfos) {
+          info.print();
       }
   }
+
+  private static void startClassInfo(String name) {
+          var info = new ClassMethodInfo();
+          info.setName(name);
+          currentClassMethodInfo.push(info);
+      }
+
+      private static void startMethodCalls(String name) {
+          var calls = new MethodCalls();
+          calls.setMethodName(name);
+          currentMethodCalls.push(calls);
+      }
+
+      private static void addMethodCall(String name) {
+          // TODO : type faut le trouver avec le storage lors des declarations de variables globales et locales
+          var type = "TOFIND";
+          currentMethodCalls.peek().addCallee(type + "." + name);
+      }
+
+      private static void endMethodCalls() {
+          currentClassMethodInfo.peek().addCalls(currentMethodCalls.pop());
+      }
+
+      private static void endClassInfo() {
+          classMethodInfos.add(currentClassMethodInfo.pop());
+      }
   
   
 }
@@ -573,7 +600,7 @@ void ClassOrInterfaceDeclaration():
       ( 
           "class" | "interface" 
       )
-      className=<IDENTIFIER> {currentMethodCall = new MethodCalls(); currentMethodCall.setClassName(className.toString());}
+      className=<IDENTIFIER> {startClassInfo(className.toString());}
       [ TypeParameters() ]
       [ ExtendsList() ]
       [ ImplementsList() ]
@@ -584,6 +611,7 @@ void ClassOrInterfaceDeclaration():
       Java 1.5 compiler doesn't mind it, but this parser whined if the class has a
       semi-colon after the last }. */
       [ LOOKAHEAD(2) <SEMICOLON> ]
+
 }
 
 void ExtendsList():
@@ -696,6 +724,7 @@ void ClassOrInterfaceBody():
             )*
             "}"
         )
+        {endClassInfo();}
 }
 
 void ClassOrInterfaceBodyDeclaration():
@@ -792,7 +821,6 @@ void ArrayInitializer():
 
 void MethodDeclaration():
 {
- // TODO : methods start here
 }
 {
     
@@ -803,6 +831,7 @@ void MethodDeclaration():
           MethodDeclarator() [ "throws" NameList() ]
           ( Block() | ";" )
         )
+        {endMethodCalls();}
 }
 
 void MethodDeclarator():
@@ -812,16 +841,7 @@ void MethodDeclarator():
 {
     
         (
-            methodName=<IDENTIFIER> FormalParameters() ( "[" "]" )* {
-            
-            	if (currentMethodCall.hasMethodName()) {
-            		callsOfMethods.add(currentMethodCall);
-            		String className = currentMethodCall.getClassName();
-            		currentMethodCall = new MethodCalls();
-            		currentMethodCall.setClassName(className);
-            	}
-            	currentMethodCall.setMethodName(methodName.toString());
-            }
+            methodName=<IDENTIFIER> FormalParameters() ( "[" "]" )* {startMethodCalls(methodName.toString());}
         )
 }
 
@@ -1025,7 +1045,7 @@ void Name():
             LOOKAHEAD(2)
             "." methodName=<IDENTIFIER>
         )*
-        {if (methodName != null) currentMethodCall.addCallee(methodName.toString());}
+        {if (methodName != null) addMethodCall(methodName.toString());}
 }
 
 void NameList():
@@ -1314,7 +1334,7 @@ void PrimarySuffix():
         |
           "[" Expression() "]"
         |
-          "." weirdMethod=<IDENTIFIER> {currentMethodCall.addCallee(weirdMethod.toString());}
+          "." weirdMethod=<IDENTIFIER> {addMethodCall(weirdMethod.toString());}
         |
           Arguments()
 }
