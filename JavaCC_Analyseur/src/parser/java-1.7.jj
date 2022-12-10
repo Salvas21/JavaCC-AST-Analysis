@@ -68,6 +68,20 @@ public class JavaParser
    private static Stack<ClassMethodInfo> currentClassMethodInfo = new Stack<ClassMethodInfo>();
    private static Stack<MethodCalls> currentMethodCalls = new Stack<MethodCalls>();
 
+   private static Storage storage = new Storage();
+   private static String varClass = null;
+   private static String varMethod = null;
+   private static String varType = null;
+   private static String varKey = null;
+
+   //private ArrayList<File> files;
+
+   /*private static initFiles() {
+       file.isDirectory
+            file.listFiles()
+   }*/
+
+
     /**
      * Constructor for JavaParser.
      * @param filename name of the file to parse
@@ -146,31 +160,67 @@ public class JavaParser
   }
 
   private static void startClassInfo(String name) {
-          var info = new ClassMethodInfo();
-          info.setName(name);
-          currentClassMethodInfo.push(info);
+      var info = new ClassMethodInfo();
+      info.setName(name);
+      currentClassMethodInfo.push(info);
+      setVarClassName(name);
+  }
+
+  private static void startMethodCalls(String name) {
+      var calls = new MethodCalls();
+      calls.setMethodName(name);
+      currentMethodCalls.push(calls);
+      setVarMethodName(name);
+  }
+
+  private static void addMethodCall(String type, String name) {
+      // TODO : type faut le trouver avec le storage lors des declarations de variables globales et locales
+      if (type.equals("")) {
+          System.out.println("Pas de variable, donc weird ou this");
+          // si this, devrait regarder dans le storage si la variable existe, si oui rien faire avec
+          type = "?";
+      } else {
+          System.out.println(type);
+          type = storage.getType(type);
       }
 
-      private static void startMethodCalls(String name) {
-          var calls = new MethodCalls();
-          calls.setMethodName(name);
-          currentMethodCalls.push(calls);
-      }
+      currentMethodCalls.peek().addCallee(type + "." + name);
+  }
 
-      private static void addMethodCall(String name) {
-          // TODO : type faut le trouver avec le storage lors des declarations de variables globales et locales
-          var type = "TOFIND";
-          currentMethodCalls.peek().addCallee(type + "." + name);
-      }
+  private static void endMethodCalls() {
+      storage.removeMethodVars(currentMethodCalls.peek().getMethodName());
+      currentClassMethodInfo.peek().addCalls(currentMethodCalls.pop());
+  }
 
-      private static void endMethodCalls() {
-          currentClassMethodInfo.peek().addCalls(currentMethodCalls.pop());
-      }
+  private static void endClassInfo() {
+      storage.removeClassVars(currentClassMethodInfo.peek().getName());
+      classMethodInfos.add(currentClassMethodInfo.pop());
+  }
 
-      private static void endClassInfo() {
-          classMethodInfos.add(currentClassMethodInfo.pop());
-      }
-  
+  private static void addVariable(String className, String methodName, String type, String key) {
+      System.out.println("Added variable " + type + " " + key);
+      storage.add(className, methodName, type, key);
+      setVarClassName(null);
+      setVarMethodName(null);
+      setVarType(null);
+      setVarKey(null);
+  }
+
+  private static void setVarClassName(String className) {
+      varClass = className;
+  }
+
+  private static void setVarMethodName(String methodName) {
+      varMethod = methodName;
+  }
+
+  private static void setVarType(String type) {
+      varType = type;
+  }
+
+  private static void setVarKey(String key) {
+       varKey = key;
+  }
   
 }
 
@@ -763,6 +813,8 @@ void ClassOrInterfaceBodyDeclaration():
 
 void FieldDeclaration():
 {
+ String className = varClass;
+ String methodName = varMethod;
 }
 {
     
@@ -771,10 +823,10 @@ void FieldDeclaration():
             // Modifiers are already matched in the caller
             Type() VariableDeclarator()
             (
-                "," VariableDeclarator()
+                "," {addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}VariableDeclarator()
             )*
             ";"
-        )
+        ) {addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}
 }
 
 void VariableDeclarator():
@@ -789,13 +841,15 @@ void VariableDeclarator():
 
 void VariableDeclaratorId():
 {
+ Token varId;
 }
 {
     
-        <IDENTIFIER> 
+        varId=<IDENTIFIER>
         ( 
             "[" "]" 
         )*
+        {setVarKey(varId.toString());}
 }
 
 void VariableInitializer():
@@ -865,6 +919,8 @@ void FormalParameters():
 
 void FormalParameter():
 {
+ String className = varClass;
+ String methodName = varMethod;
 }
 {
     
@@ -875,22 +931,24 @@ void FormalParameter():
         <ELLIPSIS>  // ...
        ]
        VariableDeclaratorId()
-      )
+      ) {addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}
 }
 
 void ConstructorDeclaration():
 {
+ Token constructorName;
 }
 {
     
         (
             [ Annotation() ]
             [ TypeParameters() ]
-            <IDENTIFIER> FormalParameters() [ "throws" NameList() ]
+            constructorName=<IDENTIFIER> FormalParameters() [ "throws" NameList() ] {startMethodCalls(constructorName.toString());}
             "{"
                 [ LOOKAHEAD(ExplicitConstructorInvocation()) ExplicitConstructorInvocation() ]
             ( BlockStatement() )*
             "}"
+            {endMethodCalls();}
         )
 }
 
@@ -940,17 +998,16 @@ void ReferenceType():
 
 void ClassOrInterfaceType():
 {
- // TODO : get variable or class ?
-
+ Token type;
 }
 {
     
         (
-          <IDENTIFIER> [ LOOKAHEAD(2) TypeArguments() ]
+          type=<IDENTIFIER> [ LOOKAHEAD(2) TypeArguments() ]
           ( LOOKAHEAD(2) "." 
               <IDENTIFIER> [ LOOKAHEAD(2) TypeArguments() ]
           )*
-        )
+        ) {setVarType(type.toString());}
 }
 
 void TypeArguments():
@@ -995,26 +1052,27 @@ void WildcardBounds():
 
 void PrimitiveType():
 {
+ Token type;
 }
 {
     
         (
-              "boolean"
+              type="boolean"
             |
-              "char"
+              type="char"
             | 
-              "byte"
+              type="byte"
             | 
-              "short" 
+              type="short"
             | 
-              "int"
+              type="int"
             | 
-              "long"
+              type="long"
             | 
-              "float"
+              type="float"
             | 
-              "double" 
-        )
+              type="double"
+        ) {setVarType(type.toString());}
 }
 
 void ResultType():
@@ -1045,7 +1103,7 @@ void Name():
             LOOKAHEAD(2)
             "." methodName=<IDENTIFIER>
         )*
-        {if (methodName != null) addMethodCall(methodName.toString());}
+        {if (methodName != null) addMethodCall(varName.toString(), methodName.toString());}
 }
 
 void NameList():
@@ -1292,6 +1350,7 @@ void MemberSelector():
 
 void PrimaryPrefix():
 {
+ // TODO : mettre "this" "." attribut somehow ?
 }
 {
     
@@ -1334,7 +1393,7 @@ void PrimarySuffix():
         |
           "[" Expression() "]"
         |
-          "." weirdMethod=<IDENTIFIER> {addMethodCall(weirdMethod.toString());}
+          "." weirdMethod=<IDENTIFIER> {addMethodCall("", weirdMethod.toString());}
         |
           Arguments()
 }
@@ -1480,7 +1539,6 @@ void LabeledStatement():
 
 void Block():
 {
- // TODO : block declaration of methods
 }
 {
     

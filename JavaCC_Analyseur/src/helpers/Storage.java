@@ -21,11 +21,11 @@ public class Storage {
     }
 
     public void removeMethodVars(String methodName) {
-        variables.removeIf(v -> !v.getMethodName().equals(methodName));
+        variables.removeIf(v -> v.getMethodName() != null && v.getMethodName().equals(methodName));
     }
 
     public void removeClassVars(String className) {
-        variables.removeIf(v -> !v.getMethodName().equals(className));
+        variables.removeIf(v -> v.getClassName().equals(className));
     }
 
 }

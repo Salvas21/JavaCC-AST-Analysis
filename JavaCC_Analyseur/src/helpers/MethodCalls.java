@@ -13,16 +13,16 @@ public class MethodCalls {
         methodName = null;
     }
 
+    public String getMethodName() {
+        return methodName;
+    }
+
     public void setMethodName(String methodName) {
         this.methodName = methodName;
     }
 
     public void addCallee(String method) {
         callees.add(method);
-    }
-
-    public boolean hasMethodName() {
-        return methodName != null;
     }
 
     public void print() {
