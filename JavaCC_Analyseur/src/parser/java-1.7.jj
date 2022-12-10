@@ -43,24 +43,23 @@ options {
   JAVA_UNICODE_ESCAPE = true;
   //ERROR_REPORTING = true;
   STATIC = false;
-  //DEBUG_PARSER = true;
+//DEBUG_PARSER = true;
 }
 
 PARSER_BEGIN(JavaParser)
 package parser;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
+import helpers.UmlGrapher;
+import java.util.Stack;
 
 public class JavaParser
 {
 
    private InputStream inputStream = null;
-   private String className = "";
-   private Set<String> interfaces = new HashSet<String>();
-   private Set<String> classesUsed = new HashSet<String>();
-   private String extendsName = "";
+   private static UmlGrapher grapher;
+   private static Stack<UmlGrapher> graphStack;
+
 
     /**
      * Constructor for JavaParser.
@@ -101,16 +100,21 @@ public class JavaParser
   // the command line:
   // for f in /some/directory/full/of/java/files/*.java; do java -cp . JavaParser $f; done
   public static void main(String args[]) {
+    File f = new File(args[0]);
+    String[] pathNames = f.list();
     JavaParser parser;
-    if (args.length == 0) {
+    for(String pathName: pathNames) {
+      grapher = null;
+      graphStack = new Stack<UmlGrapher>();
+      if (args.length == 0) {
       System.out.println("Java Parser Version 1.7:  Reading from standard input...");
       parser = new JavaParser(System.in);
     } else if (args.length == 1) {
-      System.out.println("Java Parser Version 1.7:  Reading from file " + args[0] + "...");
+      System.out.println("Java Parser Version 1.7:  Reading from file " + args[0] + "/" + pathName + "...");
       try {
-        parser = new JavaParser(new java.io.FileInputStream(args[0]));
+        parser = new JavaParser(new java.io.FileInputStream(args[0] + "/" + pathName));
       } catch (java.io.FileNotFoundException e) {
-        System.out.println("Java Parser Version 1.7:  File " + args[0] + " not found.");
+        System.out.println("Java Parser Version 1.7:  File " + args[0] + "/" + pathName + " not found.");
         return;
       }
     } else {
@@ -122,32 +126,37 @@ public class JavaParser
     }
     try {
       parser.CompilationUnit();
-      parser.showResults();
       System.out.println("Java Parser Version 1.7:  Java program parsed successfully.");
     } catch (ParseException e) {
       System.out.println(e.getMessage());
       System.out.println("Java Parser Version 1.7:  Encountered errors during parse.");
     }
-  }
-
-  public void showResults() {
-    System.out.println("=====Resultat=====");
-    if (className.equals(""))
-    	return;
-    System.out.println("Class : " + className);
-    if (!extendsName.equals("")) {
-		System.out.println(className + " ..> " + extendsName);
     }
-    for (String iName: interfaces) {
-		System.out.println(className + "  ..> " + iName);
-    }
-    for (String cName: classesUsed) {
-      if (interfaces.contains(cName))
-      	continue;
-      if (cName.equals(extendsName))
-      	continue;
-		System.out.println(className + " --> " + cName);
-    }
+//    if (args.length == 0) {
+//      System.out.println("Java Parser Version 1.7:  Reading from standard input...");
+//      parser = new JavaParser(System.in);
+//    } else if (args.length == 1) {
+//      System.out.println("Java Parser Version 1.7:  Reading from file " + args[0] + "...");
+//      try {
+//        parser = new JavaParser(new java.io.FileInputStream(args[0]));
+//      } catch (java.io.FileNotFoundException e) {
+//        System.out.println("Java Parser Version 1.7:  File " + args[0] + " not found.");
+//        return;
+//      }
+//    } else {
+//      System.out.println("Java Parser Version 1.7:  Usage is one of:");
+//      System.out.println("         java JavaParser < inputfile");
+//      System.out.println("OR");
+//      System.out.println("         java JavaParser inputfile");
+//      return;
+//    }
+//    try {
+//      parser.CompilationUnit();
+//      System.out.println("Java Parser Version 1.7:  Java program parsed successfully.");
+//    } catch (ParseException e) {
+//      System.out.println(e.getMessage());
+//      System.out.println("Java Parser Version 1.7:  Encountered errors during parse.");
+//    }
   }
   
 }
@@ -572,19 +581,19 @@ void TypeDeclaration():
 void ClassOrInterfaceDeclaration():
 {
   Token t;
-  boolean isClass = false;
 }
 {
     
       ( 
-          "class" {
-            isClass = true;
-             } | "interface" 
+          "class" | "interface" 
       )
       t=<IDENTIFIER>
       {
-        if (isClass)
-        	className = t.toString();
+        if (grapher != null) {
+          graphStack.push(grapher);
+      	}
+      	grapher = new UmlGrapher(t.toString());
+    	
       }
       [ TypeParameters() ]
       [ ExtendsList() ]
@@ -596,6 +605,12 @@ void ClassOrInterfaceDeclaration():
       Java 1.5 compiler doesn't mind it, but this parser whined if the class has a
       semi-colon after the last }. */
       [ LOOKAHEAD(2) <SEMICOLON> ]
+      {
+		grapher.printResult();
+		if (!graphStack.isEmpty()) {
+		  grapher = graphStack.pop();
+	  	}
+      }
 }
 
 void ExtendsList():
@@ -604,7 +619,7 @@ void ExtendsList():
 {
     
 
-       "extends" {extendsName = getToken(1).toString(); }ClassOrInterfaceType()
+       "extends" {grapher.setExtendName(getToken(1).toString()); }ClassOrInterfaceType()
        ( "," ClassOrInterfaceType() )*
 
 }
@@ -615,7 +630,7 @@ void ImplementsList():
 {
     
 
-        "implements" {interfaces.add(getToken(1).toString()); }ClassOrInterfaceType()
+        "implements" {grapher.addInterface(getToken(1).toString());}ClassOrInterfaceType()
        ( "," ClassOrInterfaceType() )*
 
 }
@@ -908,7 +923,6 @@ void Type():
 
 void ReferenceType():
 {
-  Token t;
 }
 {
     
@@ -927,7 +941,7 @@ void ClassOrInterfaceType():
 {
     
         (
-          t=<IDENTIFIER> {classesUsed.add(t.toString());}[ LOOKAHEAD(2) TypeArguments() ]
+          t=<IDENTIFIER> {grapher.addClass(t.toString());}[ LOOKAHEAD(2) TypeArguments() ]
           ( LOOKAHEAD(2) "." 
               <IDENTIFIER> [ LOOKAHEAD(2) TypeArguments() ]
           )*
