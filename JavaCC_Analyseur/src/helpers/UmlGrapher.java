@@ -20,7 +20,7 @@ public class UmlGrapher {
 			System.out.println(className + " ..> " + extendsName);
 	    }
 	    for (String iName: interfaces) {
-			System.out.println(className + "  ..> " + iName);
+			System.out.println(className + " ..> " + iName);
 	    }
 	    for (String cName: classesUsed) {
 	      if (interfaces.contains(cName))
