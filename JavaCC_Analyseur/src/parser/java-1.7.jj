@@ -174,13 +174,13 @@ public class JavaParser
   }
 
   private static void addMethodCall(String type, String name) {
-      // TODO : type faut le trouver avec le storage lors des declarations de variables globales et locales
-      if (type.equals("")) {
-          System.out.println("Pas de variable, donc weird ou this");
-          // si this, devrait regarder dans le storage si la variable existe, si oui rien faire avec
+      if (type.equals("this")) {
+          // appel de methode a la classe elle meme
+          type = varClass;
+      } else if (type.equals("")) {
+          // appel de methode en chaine donc a pas de type ex: .b().c()
           type = "?";
       } else {
-          System.out.println(type);
           type = storage.getType(type);
       }
 
@@ -1100,10 +1100,10 @@ void Name():
 {
         varName=<IDENTIFIER>
         (
-            LOOKAHEAD(2)
-            "." methodName=<IDENTIFIER>
+              LOOKAHEAD( "." <IDENTIFIER> "(" ) "." methodName=<IDENTIFIER> Arguments() {addMethodCall(varName.toString(), methodName.toString());}
+            |
+              LOOKAHEAD(2) "." <IDENTIFIER>
         )*
-        {if (methodName != null) addMethodCall(varName.toString(), methodName.toString());}
 }
 
 void NameList():
@@ -1350,11 +1350,13 @@ void MemberSelector():
 
 void PrimaryPrefix():
 {
- // TODO : mettre "this" "." attribut somehow ?
+ Token methodName;
 }
 {
     
           Literal()
+        |
+          LOOKAHEAD("this" "." <IDENTIFIER> "(") "this" "." methodName=<IDENTIFIER> Arguments() {addMethodCall("this", methodName.toString());}
         |
           "this"
         |
@@ -1372,6 +1374,8 @@ void PrimaryPrefix():
         |
           LOOKAHEAD( ResultType() "." "class" )
           ResultType() "." "class"
+        |
+          LOOKAHEAD(<IDENTIFIER> "(") methodName=<IDENTIFIER> Arguments() {addMethodCall("this", methodName.toString());}
         |
           Name()
 }
@@ -1393,7 +1397,9 @@ void PrimarySuffix():
         |
           "[" Expression() "]"
         |
-          "." weirdMethod=<IDENTIFIER> {addMethodCall("", weirdMethod.toString());}
+          LOOKAHEAD( "." <IDENTIFIER> "(" ) "." weirdMethod=<IDENTIFIER> Arguments() {addMethodCall("", weirdMethod.toString());}
+        |
+          "." <IDENTIFIER>
         |
           Arguments()
 }
@@ -1564,15 +1570,17 @@ void BlockStatement():
 
 void LocalVariableDeclaration():
 {
-
+    String className = varClass;
+    String methodName = varMethod;
+    String type;
 }
 {
     
       // old -- [ "final" ] Type() VariableDeclarator() ( "," VariableDeclarator() )*
       // new -- Modifiers() Type() VariableDeclarator() ( "," VariableDeclarator() )*
 
-      [LOOKAHEAD(2) Annotation()] Modifiers() Type() VariableDeclarator()
-      ( "," VariableDeclarator()
+      [LOOKAHEAD(2) Annotation()] Modifiers() Type() VariableDeclarator(){type=varType; addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}
+      ( "," VariableDeclarator(){addVariable(varClass, varMethod, type, varKey); setVarClassName(className); setVarMethodName(methodName);}
       )*
 }
 

@@ -16,8 +16,16 @@ public class Storage {
         variables.add(var);
     }
 
+    /**
+     * Gets the type of a variable key (so it's class) or else if it doesn't find a variable
+     * (might be a static class call so key = Object) return itself
+     * @param key
+     * @return
+     */
     public String getType(String key) {
-        return variables.stream().filter(variable -> variable.getKey().equals(key)).findFirst().get().getType();
+        Variable def = new Variable();
+        def.setType(key);
+        return variables.stream().filter(variable -> variable.getKey().equals(key)).findFirst().orElse(def).getType();
     }
 
     public void removeMethodVars(String methodName) {

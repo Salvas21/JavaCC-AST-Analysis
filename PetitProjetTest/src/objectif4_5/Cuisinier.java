@@ -17,7 +17,7 @@ public class Cuisinier {
 		C c = (new A()).b().c();
 		
 		c.toString();
-
+		this.testABC();
 	}
 
 }
