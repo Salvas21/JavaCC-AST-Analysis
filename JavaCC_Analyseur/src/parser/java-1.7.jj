@@ -74,6 +74,8 @@ public class JavaParser
    private static String varType = null;
    private static String varKey = null;
 
+   private static String lastType = null;
+
    //private ArrayList<File> files;
 
    /*private static initFiles() {
@@ -179,8 +181,12 @@ public class JavaParser
           type = varClass;
       } else if (type.equals("")) {
           // appel de methode en chaine donc a pas de type ex: .b().c()
-          // get type of last new var ?
+          // peut determiner l'appel d'un premiere methode a l'aide du dernier type de reference trouvé
           type = "?";
+          if (lastType != null) {
+            type = lastType;
+            lastType = null;
+          }
       } else {
           type = storage.getType(type);
       }
@@ -194,9 +200,7 @@ public class JavaParser
   }
 
   private static void endClassInfo() {
-      storage.print();
       storage.removeClassVars(currentClassMethodInfo.peek().getName());
-      storage.print();
       classMethodInfos.add(currentClassMethodInfo.pop());
   }
 
@@ -835,11 +839,13 @@ void FieldDeclaration():
 
 void VariableDeclarator():
 {
+    String className = varClass;
+    String methodName = varMethod;
 }
 {
     
         (
-            VariableDeclaratorId() [ "=" VariableInitializer() ]
+            VariableDeclaratorId(){addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);} [ "=" VariableInitializer() ]
         )
 }
 
@@ -1011,7 +1017,7 @@ void ClassOrInterfaceType():
           ( LOOKAHEAD(2) "." 
               <IDENTIFIER> [ LOOKAHEAD(2) TypeArguments() ]
           )*
-        ) {setVarType(type.toString());}
+        ) {setVarType(type.toString()); lastType=type.toString();}
 }
 
 void TypeArguments():
@@ -1586,7 +1592,7 @@ void LocalVariableDeclaration():
       // old -- [ "final" ] Type() VariableDeclarator() ( "," VariableDeclarator() )*
       // new -- Modifiers() Type() VariableDeclarator() ( "," VariableDeclarator() )*
 
-      [LOOKAHEAD(2) Annotation()] Modifiers() Type() VariableDeclarator(){type=varType; addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}
+      [LOOKAHEAD(2) Annotation()] Modifiers() Type() {type=varType;} VariableDeclarator()
       ( "," VariableDeclarator(){addVariable(varClass, varMethod, type, varKey); setVarClassName(className); setVarMethodName(methodName);}
       )*
 }
