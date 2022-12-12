@@ -58,7 +58,10 @@ public class JavaParser
 		private int nbPublic = 0;
 		private int nbPrivate = 0;
 		private int nbProtected = 0;
+		private int nbSimple = 0;
+		private int nbObject = 0;
 		private String classe = "";
+		private String subClasse = "";
 	
 	  	public VariableType() { ; }
 
@@ -77,19 +80,47 @@ public class JavaParser
 	  	  nbProtected += add;
 	  	}
 
+	  	public void addSimple(int add)
+	  	{
+	  	  nbSimple += add;
+	  	}
+
+	  	public void addObject(int add)
+	  	{
+	  	  nbObject += add;
+	  	}
+
 	  	public void setClasse(String classe)
 	  	{
 	  	  this.classe = classe;
 	  	}
 
+	  	public void addSubClasse(String classe)
+	  	{
+	  	  if (subClasse != "")
+	  	  {
+	  	    subClasse += ",";
+	  	  }
+	  	  subClasse += classe;
+	  	}
+
 	  	public String toString()
 	  	{
 	  	  	int total = nbPublic + nbPrivate + nbProtected;
+	  	  	String sc = "";
+
+	  	  	if (subClasse != "")
+	  	  	{
+	  	  	  sc = "\n\nClasse avec visibilite permanente: " + subClasse;
+	  	  	}
 	  	  	
-			return "\n**********\nCLASSE: " + classe
-		    + "\nAttribut publique: \t" + String.format("%.2f",nbPublic * 100.0 / total) + "%\t (" + nbPublic + ")"
-		    + "\nAttribut prive: \t" + String.format("%.2f",nbPrivate * 100.0 / total)  + "%\t (" + nbPrivate + ")"
-		    + "\nAttribut protege: \t" + String.format("%.2f",nbProtected * 100.0 / total)  + "%\t (" + nbProtected + ")" + "\n**********";
+			return "\n****************************************\nCLASSE: " + classe
+		    + "\nAttribut publique: \t" + String.format("%.1f",nbPublic * 100.0 / total) + "%\t (" + nbPublic + ")"
+		    + "\nAttribut prive: \t" + String.format("%.1f",nbPrivate * 100.0 / total)  + "%\t (" + nbPrivate + ")"
+		    + "\nAttribut protege: \t" + String.format("%.1f",nbProtected * 100.0 / total)  + "%\t (" + nbProtected + ")"
+			+ "\n\nAttribut simple: \t" + String.format("%.1f",nbSimple * 100.0 / total)  + "%\t (" + nbSimple + ")"
+			+ "\nAttribut objet: \t" + String.format("%.1f",nbObject * 100.0 / total)  + "%\t (" + nbObject + ")"
+			+ sc + "\n****************************************";
 		}
 	}
 
@@ -586,6 +617,13 @@ void TypeDeclaration():
 
 void ClassOrInterfaceDeclaration():
 {
+}
+{
+	ClassOrInterfaceDeclaration2(null)
+}
+
+void ClassOrInterfaceDeclaration2(VariableType subVt):
+{
   Token t = null;
   VariableType vt = new VariableType();
 }
@@ -593,7 +631,14 @@ void ClassOrInterfaceDeclaration():
       ( 
           "class" | "interface" 
       )
-      t = <IDENTIFIER> { vt.setClasse(t.toString()); }
+      t = <IDENTIFIER>
+      {
+      	vt.setClasse(t.toString());
+      	if (subVt != null)
+      	{
+      	  subVt.addSubClasse(t.toString());
+      	}
+      }
       [ TypeParameters() ]
       [ ExtendsList() ]
       [ ImplementsList() ]
@@ -740,7 +785,6 @@ void ClassOrInterfaceBodyDeclaration():
 void ClassOrInterfaceBodyDeclaration2(VariableType vt):
 {
   Token mod;
-  int result;
 }
 {
           (
@@ -751,7 +795,7 @@ void ClassOrInterfaceBodyDeclaration2(VariableType vt):
                       // more checks, pass the modifiers down to the member
           (
               LOOKAHEAD(3)
-              ClassOrInterfaceDeclaration()
+              ClassOrInterfaceDeclaration2(vt)
             |
               EnumDeclaration()
             |
@@ -759,32 +803,7 @@ void ClassOrInterfaceBodyDeclaration2(VariableType vt):
               ConstructorDeclaration()
             |
               LOOKAHEAD( Type() <IDENTIFIER> ( "[" "]" )* ( "," | "=" | ";" ) )
-              result = FieldDeclaration()
-              {
-                if (vt != null)
-                {
-                  	if (mod == null)
-                  	{
-                  	  	vt.addPublic(result);
-                  	}
-                  	else
-                  	{
-		                switch(mod.toString())
-		                {
-		                  case "public":
-		                  case "":
-		                  	vt.addPublic(result);
-		                  	break;
-		                  case "private":
-		                  	vt.addPrivate(result);
-		                  	break;
-		                  case "protected":
-		                  	vt.addProtected(result);
-		                  	break;
-		                }
-                  	}
-                }
-              }
+              FieldDeclaration2(vt, mod)
             |
               LOOKAHEAD(2)
               AnnotationTypeDeclaration()
@@ -796,20 +815,61 @@ void ClassOrInterfaceBodyDeclaration2(VariableType vt):
           )
 }
 
-int FieldDeclaration():
+void FieldDeclaration():
+{
+}
+{
+	FieldDeclaration2(null)
+}
+
+void FieldDeclaration2(VariableType vt, Token mod):
 {
   int nb = 0;
+  Boolean estObject;
 }
 {
         (
             // Modifiers are already matched in the caller
-            Type() VariableDeclarator() { nb++; }
+            estObject = Type() VariableDeclarator() { nb++; }
             (
                 "," VariableDeclarator() { nb++; }
             )*
             ";"
         )
-        { return nb; }
+        {
+            if (vt != null)
+            {
+              	if (mod == null)
+              	{
+              	  	vt.addPublic(nb);
+              	}
+              	else
+              	{
+	                switch(mod.toString())
+	                {
+	                  case "public":
+	                  case "":
+	                  	vt.addPublic(nb);
+	                  	break;
+	                  case "private":
+	                  	vt.addPrivate(nb);
+	                  	break;
+	                  case "protected":
+	                  	vt.addProtected(nb);
+	                  	break;
+	                }
+              	}
+
+              	if (estObject)
+              	{
+              	  vt.addObject(nb);
+              	}
+              	else
+              	{
+              	  vt.addSimple(nb);
+              	}
+            }
+        }
 }
 
 void VariableDeclarator():
@@ -946,16 +1006,24 @@ void Initializer():
         [ <STATIC> ] Block()
 }
 
-void Type():
+/*void Type():
 {
 }
 {
-    
+	Type2(null)
+}*/
+
+Boolean Type()://VariableType vt):
+{
+  Boolean estObject = null;
+}
+{
         (
-         LOOKAHEAD(2) ReferenceType()
+         LOOKAHEAD(2) ReferenceType() { estObject = true; } //{ if(vt != null) { vt.addObject(1); } }
         |
-         PrimitiveType()
+         PrimitiveType() { estObject = false; } //{ if(vt != null) { vt.addSimple(1); } }
         )
+        { return estObject; }
 }
 
 void ReferenceType():
