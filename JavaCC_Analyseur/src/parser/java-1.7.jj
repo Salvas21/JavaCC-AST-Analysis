@@ -53,6 +53,45 @@ import java.io.*;
 
 public class JavaParser
 {
+	class VariableType
+	{
+		private int nbPublic = 0;
+		private int nbPrivate = 0;
+		private int nbProtected = 0;
+		private String classe = "";
+	
+	  	public VariableType() { ; }
+
+	  	public void addPublic(int add)
+	  	{
+	  	  nbPublic += add;
+	  	}
+
+	  	public void addPrivate(int add)
+	  	{
+	  	  nbPrivate += add;
+	  	}
+
+	  	public void addProtected(int add)
+	  	{
+	  	  nbProtected += add;
+	  	}
+
+	  	public void setClasse(String classe)
+	  	{
+	  	  this.classe = classe;
+	  	}
+
+	  	public String toString()
+	  	{
+	  	  	int total = nbPublic + nbPrivate + nbProtected;
+	  	  	
+			return "\n**********\nCLASSE: " + classe
+		    + "\nAttribut publique: \t" + String.format("%.2f",nbPublic * 100.0 / total) + "%\t (" + nbPublic + ")"
+		    + "\nAttribut prive: \t" + String.format("%.2f",nbPrivate * 100.0 / total)  + "%\t (" + nbPrivate + ")"
+		    + "\nAttribut protege: \t" + String.format("%.2f",nbProtected * 100.0 / total)  + "%\t (" + nbProtected + ")" + "\n**********";
+		}
+	}
 
    private InputStream inputStream = null;
 
@@ -485,38 +524,40 @@ void  ImportDeclaration():
  * TODO: write productions for the actual modifiers allowed for each construct.
  */
 
-void Modifiers():
+Token Modifiers():
 {
+  Token m = null;
 }
 {
  (
-  LOOKAHEAD(2)
-  (
-   <PUBLIC>
+   LOOKAHEAD(2)
+   (
+   m=<PUBLIC>
   |
-   <STATIC>
+   m=<STATIC>
   |
-   <PROTECTED>
+   m=<PROTECTED>
   |
-   <PRIVATE> 
+   m=<PRIVATE> 
   |
-   <FINAL>
+   m=<FINAL>
   |
-   <ABSTRACT>
+   m=<ABSTRACT>
   |
-   <SYNCHRONIZED>
+   m=<SYNCHRONIZED>
   |
-   <NATIVE> 
+   m=<NATIVE> 
   |
-   <TRANSIENT>
+   m=<TRANSIENT>
   |
-   <VOLATILE>
+   m=<VOLATILE>
   |
-   <STRICTFP>
+   m=<STRICTFP>
   |
    Annotation()
   )
  )*
+ { return m; }
 }
 
 /*
@@ -545,17 +586,18 @@ void TypeDeclaration():
 
 void ClassOrInterfaceDeclaration():
 {
+  Token t = null;
+  VariableType vt = new VariableType();
 }
 {
-    
       ( 
           "class" | "interface" 
       )
-      <IDENTIFIER>
+      t = <IDENTIFIER> { vt.setClasse(t.toString()); }
       [ TypeParameters() ]
       [ ExtendsList() ]
       [ ImplementsList() ]
-      ClassOrInterfaceBody()
+      ClassOrInterfaceBody2(vt)
 
       /* danson, added this check for trailing semi-colon.  Apparently, this has been
       legal since the beginning of Java, some sort of a C hold-over.  Sun's latest
@@ -665,27 +707,47 @@ void ClassOrInterfaceBody():
 {
 }
 {
-    
+  ClassOrInterfaceBody2(null)
+}
 
+void ClassOrInterfaceBody2(VariableType vt):
+{
+}
+{
         (
             "{"
             (
-                ClassOrInterfaceBodyDeclaration()
+                ClassOrInterfaceBodyDeclaration2(vt)
             )*
             "}"
         )
+
+        {
+          if (vt != null)
+          {
+            System.out.println(vt);
+          }
+        }
 }
 
 void ClassOrInterfaceBodyDeclaration():
 {
 }
 {
-    
+  ClassOrInterfaceBodyDeclaration2(null)
+}
+
+void ClassOrInterfaceBodyDeclaration2(VariableType vt):
+{
+  Token mod;
+  int result;
+}
+{
           (
           LOOKAHEAD(2)
           Initializer()
         |
-          Modifiers() // Just get all the modifiers out of the way. If you want to do
+          mod=Modifiers() // Just get all the modifiers out of the way. If you want to do
                       // more checks, pass the modifiers down to the member
           (
               LOOKAHEAD(3)
@@ -697,33 +759,57 @@ void ClassOrInterfaceBodyDeclaration():
               ConstructorDeclaration()
             |
               LOOKAHEAD( Type() <IDENTIFIER> ( "[" "]" )* ( "," | "=" | ";" ) )
-              FieldDeclaration()
+              result = FieldDeclaration()
+              {
+                if (vt != null)
+                {
+                  	if (mod == null)
+                  	{
+                  	  	vt.addPublic(result);
+                  	}
+                  	else
+                  	{
+		                switch(mod.toString())
+		                {
+		                  case "public":
+		                  case "":
+		                  	vt.addPublic(result);
+		                  	break;
+		                  case "private":
+		                  	vt.addPrivate(result);
+		                  	break;
+		                  case "protected":
+		                  	vt.addProtected(result);
+		                  	break;
+		                }
+                  	}
+                }
+              }
             |
               LOOKAHEAD(2)
               AnnotationTypeDeclaration()
             |
               MethodDeclaration()
-
           )
         |
           ";"  
           )
 }
 
-void FieldDeclaration():
+int FieldDeclaration():
 {
+  int nb = 0;
 }
 {
-    
-
         (
             // Modifiers are already matched in the caller
-            Type() VariableDeclarator()
+            Type() VariableDeclarator() { nb++; }
             (
-                "," VariableDeclarator()
+                "," VariableDeclarator() { nb++; }
             )*
             ";"
         )
+        { return nb; }
 }
 
 void VariableDeclarator():
