@@ -179,6 +179,7 @@ public class JavaParser
           type = varClass;
       } else if (type.equals("")) {
           // appel de methode en chaine donc a pas de type ex: .b().c()
+          // get type of last new var ?
           type = "?";
       } else {
           type = storage.getType(type);
@@ -193,7 +194,9 @@ public class JavaParser
   }
 
   private static void endClassInfo() {
+      storage.print();
       storage.removeClassVars(currentClassMethodInfo.peek().getName());
+      storage.print();
       classMethodInfos.add(currentClassMethodInfo.pop());
   }
 
@@ -815,15 +818,16 @@ void FieldDeclaration():
 {
  String className = varClass;
  String methodName = varMethod;
+ String type;
 }
 {
     
 
         (
             // Modifiers are already matched in the caller
-            Type() VariableDeclarator()
+            Type() {type=varType;}VariableDeclarator()
             (
-                "," {addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}VariableDeclarator()
+                "," {varType=type; addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}VariableDeclarator()
             )*
             ";"
         ) {addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}
@@ -1382,6 +1386,7 @@ void PrimaryPrefix():
 
 void PrimarySuffix():
 {
+    Token attribute;
 	Token weirdMethod;
 }
 {
@@ -1396,6 +1401,8 @@ void PrimarySuffix():
           MemberSelector()
         |
           "[" Expression() "]"
+        |
+          LOOKAHEAD( "." <IDENTIFIER> "." <IDENTIFIER> "(" ) "." attribute=<IDENTIFIER> "." weirdMethod=<IDENTIFIER> Arguments() {addMethodCall(attribute.toString(), weirdMethod.toString());}
         |
           LOOKAHEAD( "." <IDENTIFIER> "(" ) "." weirdMethod=<IDENTIFIER> Arguments() {addMethodCall("", weirdMethod.toString());}
         |
