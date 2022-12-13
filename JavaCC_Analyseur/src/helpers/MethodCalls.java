@@ -1,5 +1,7 @@
 package helpers;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +31,14 @@ public class MethodCalls {
         callees.add(method);
     }
 
-    public void print() {
+    public void print(FileWriter file)throws IOException {
         if (callees.size() == 0) {
-            System.out.println("\t\t\t\t" + "Method: " + methodName + "() calls no method(s)");
+            file.write("\t\t\t\t" + "Method: " + methodName + "() calls no method(s)\n");
             return;
         }
-        System.out.println("\t\t\t\t" + "Method: " + methodName + "() calls : ");
+        file.write("\t\t\t\t" + "Method: " + methodName + "() calls : \n");
         for (String callee : callees) {
-            System.out.println("\t\t\t\t\t" + callee + "()");
+            file.write("\t\t\t\t\t" + callee + "()\n");
         }
     }
 }

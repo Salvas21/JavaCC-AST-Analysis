@@ -139,6 +139,7 @@ public class JavaParser
    private static ArrayList<ClassMethodInfo> classMethodInfos = new ArrayList<ClassMethodInfo>();
    private static Stack<ClassMethodInfo> currentClassMethodInfo = new Stack<ClassMethodInfo>();
    private static Stack<MethodCalls> currentMethodCalls = new Stack<MethodCalls>();
+   private static FileWriter resultFile;
 
    private static Storage storage = new Storage();
    private static String varClass = null;
@@ -225,6 +226,11 @@ public class JavaParser
       System.out.println("Java Parser Version 1.7:  Reading from file or directory " + path + "...");
         try {
             File file = new File(path);
+            try {
+                resultFile = new FileWriter("results.txt");
+            } catch (Exception e) {
+
+            }
             if (file.isDirectory()) {
                 for (File childFile : file.listFiles()) {
                     grapher = null;
@@ -245,13 +251,20 @@ public class JavaParser
         } catch (ParseException e) {
             throw e;
         }
+        try {
+            resultFile.close();
+        } catch (Exception e) {
+
+        }
   }
 
   private static void printMethodCallsResult() {
-      System.out.println("\nOBJECTIF 4 & 5");
-      System.out.println("----------------------------------------");
+      try {
+          resultFile.write("OBJECTIF 4 & 5" + "\n");
+        resultFile.write("----------------------------------------\n");
+      } catch (Exception e) {}
   	  for (var info : classMethodInfos) {
-          info.print();
+          info.print(resultFile);
       }
   }
 
@@ -789,7 +802,7 @@ void ClassOrInterfaceDeclaration2(VariableType subVt):
       [ LOOKAHEAD(2) <SEMICOLON> ]
 
       {
-		grapher.printResult();
+		grapher.printResult(resultFile);
 		if (!graphStack.isEmpty()) {
 		  grapher = graphStack.pop();
 	  	}
@@ -916,7 +929,9 @@ void ClassOrInterfaceBody2(VariableType vt):
         {
           if (vt != null)
           {
-            System.out.println(vt);
+              try {
+                  resultFile.write(vt + "\n");
+              } catch (Exception e) {}
           }
         }
 }

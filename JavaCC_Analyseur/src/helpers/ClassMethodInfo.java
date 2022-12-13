@@ -1,5 +1,7 @@
 package helpers;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -24,43 +26,47 @@ public class ClassMethodInfo {
         this.calls.add(calls);
     }
 
-    public void print() {
-        printClassName();
-        if (calls.size() == 0) {
-            System.out.println("\t\tHas no method(s)");
-            return;
+    public void print(FileWriter file) {
+        try {
+            printClassName(file);
+            if (calls.size() == 0) {
+                file.write("\t\tHas no method(s)\n");
+                return;
+            }
+            file.write("\t\tGraph of direct calls between methods\n");
+            for (var call : calls) {
+                call.print(file);
+            }
+            printCoupling(file);
+        } catch (Exception e) {
+
         }
-        System.out.println("\t\tGraph of direct calls between methods");
-        for (var call : calls) {
-            call.print();
-        }
-        printCoupling();
     }
 
-    private void printCoupling() {
+    private void printCoupling(FileWriter file) throws IOException {
         if (calls.size() == 0) return;
         var totalCalls = new ArrayList<String>();
         for (var call : calls) {
             totalCalls.addAll(call.getCallees());
         }
-        System.out.println("\t\tCoupling between classes:");
+        file.write("\t\tCoupling between classes:\n");
         if (totalCalls.size() == 0) {
-            System.out.println("\t\t\tNo coupling between classes for this class");
+            file.write("\t\t\tNo coupling between classes for this class\n");
             return;
         }
 
         var printedCalls = new ArrayList<String>();
         for (var call : totalCalls) {
             if (!printedCalls.contains(call)) {
-                System.out.println("\t\t\tHas called: " + call + "() " + Collections.frequency(totalCalls, call) + " time(s)");
+                file.write("\t\t\tHas called: " + call + "() " + Collections.frequency(totalCalls, call) + " time(s)\n");
                 printedCalls.add(call);
             }
         }
     }
 
-    private void printClassName() {
-        System.out.println();
-        System.out.println("\tClass: " + name);
+    private void printClassName(FileWriter file)throws IOException {
+        file.write("\n");
+        file.write("\tClass: " + name + "\n");
     }
 
 }
