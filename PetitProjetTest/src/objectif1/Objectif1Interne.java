@@ -16,9 +16,18 @@ public class Objectif1Interne {
 
 	class Interne{
 		
-		public Interne pubI1;
+		public Interne pubI1, qwef;
 		public Interne pubI2;
 		
+		public void abc() {
+			qwef.abc();
+		}
+		
 	}
+	Integer a;
 	
+	private void toto() {
+	
+		a.equals(null);
+	}
 }
