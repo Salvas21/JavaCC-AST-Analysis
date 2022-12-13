@@ -125,13 +125,7 @@ public class JavaParser
       System.out.println("Java Parser Version 1.7:  Reading from standard input...");
       parser = new JavaParser(System.in);
     } else if (args.length == 1) {
-      System.out.println("Java Parser Version 1.7:  Reading from file " + args[0] + "...");
-      try {
-        parser = new JavaParser(new java.io.FileInputStream(args[0]));
-      } catch (java.io.FileNotFoundException e) {
-        System.out.println("Java Parser Version 1.7:  File " + args[0] + " not found.");
-        return;
-      }
+      // ok keep going
     } else {
       System.out.println("Java Parser Version 1.7:  Usage is one of:");
       System.out.println("         java JavaParser < inputfile");
@@ -163,10 +157,14 @@ public class JavaParser
             File file = new File(path);
             if (file.isDirectory()) {
                 for (File childFile : file.listFiles()) {
+                    grapher = null;
+                    graphStack = new Stack<UmlGrapher>();
                     parser = new JavaParser(new java.io.FileInputStream(childFile));
                     parser.CompilationUnit();
                 }
             } else {
+                grapher = null;
+                graphStack = new Stack<UmlGrapher>();
                 parser = new JavaParser(new java.io.FileInputStream(file));
                 parser.CompilationUnit();
             }
@@ -689,7 +687,7 @@ void ClassOrInterfaceDeclaration():
         if (grapher != null) {
           graphStack.push(grapher);
       	}
-      	grapher = new UmlGrapher(t.toString());
+      	grapher = new UmlGrapher(className.toString());
     	
       }
       [ TypeParameters() ]
