@@ -43,7 +43,7 @@ options {
   JAVA_UNICODE_ESCAPE = true;
   //ERROR_REPORTING = true;
   STATIC = false;
-  DEBUG_PARSER = true;
+  //DEBUG_PARSER = true;
 }
 
 PARSER_BEGIN(JavaParser)
@@ -76,14 +76,6 @@ public class JavaParser
 
    private static String lastType = null;
 
-   //private ArrayList<File> files;
-
-   /*private static initFiles() {
-       file.isDirectory
-            file.listFiles()
-   }*/
-
-
     /**
      * Constructor for JavaParser.
      * @param filename name of the file to parse
@@ -100,7 +92,7 @@ public class JavaParser
       }
    }
 
-   JavaParser(JavaCharStream stream) {
+   public JavaParser(JavaCharStream stream) {
         jj_input_stream = stream;
         token_source = new JavaParserTokenManager(jj_input_stream);
         token = new Token();
@@ -123,18 +115,12 @@ public class JavaParser
   // the command line:
   // for f in /some/directory/full/of/java/files/*.java; do java -cp . JavaParser $f; done
   public static void main(String args[]) {
-    JavaParser parser;
+    JavaParser parser = null;
     if (args.length == 0) {
       System.out.println("Java Parser Version 1.7:  Reading from standard input...");
       parser = new JavaParser(System.in);
     } else if (args.length == 1) {
-      System.out.println("Java Parser Version 1.7:  Reading from file " + args[0] + "...");
-      try {
-        parser = new JavaParser(new java.io.FileInputStream(args[0]));
-      } catch (java.io.FileNotFoundException e) {
-        System.out.println("Java Parser Version 1.7:  File " + args[0] + " not found.");
-        return;
-      }
+      // ok keep going will parse directory/file later
     } else {
       System.out.println("Java Parser Version 1.7:  Usage is one of:");
       System.out.println("         java JavaParser < inputfile");
@@ -143,10 +129,13 @@ public class JavaParser
       return;
     }
     try {
-      parser.CompilationUnit();
+        if (parser != null) {
+              parser.CompilationUnit();
+              printMethodCallsResult();
+        } else {
+            parse(parser, args[0]);
+        }
 
-      printMethodCallsResult();
-      
       System.out.println("Java Parser Version 1.7:  Java program parsed successfully.");
     } catch (ParseException e) {
       System.out.println(e.getMessage());
@@ -154,7 +143,29 @@ public class JavaParser
     }
     
   }
-  
+
+  private static void parse(JavaParser parser, String path) throws ParseException {
+      System.out.println("Java Parser Version 1.7:  Reading from file or directory " + path + "...");
+        try {
+            File file = new File(path);
+            if (file.isDirectory()) {
+                for (File childFile : file.listFiles()) {
+                    parser = new JavaParser(new java.io.FileInputStream(childFile));
+                    parser.CompilationUnit();
+                }
+            } else {
+                parser = new JavaParser(new java.io.FileInputStream(file));
+                parser.CompilationUnit();
+            }
+            printMethodCallsResult();
+        } catch (java.io.FileNotFoundException e) {
+          System.out.println("Java Parser Version 1.7:  File " + path + " not found.");
+          return;
+        } catch (ParseException e) {
+            throw e;
+        }
+  }
+
   private static void printMethodCallsResult() {
       System.out.println("\nOBJECTIF 4 & 5");
       System.out.println("----------------------------------------");
