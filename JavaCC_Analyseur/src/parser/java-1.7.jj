@@ -156,6 +156,8 @@ public class JavaParser
   }
   
   private static void printMethodCallsResult() {
+      System.out.println("\nOBJECTIF 4 & 5");
+      System.out.println("----------------------------------------");
   	  for (var info : classMethodInfos) {
           info.print();
       }
@@ -169,6 +171,7 @@ public class JavaParser
   }
 
   private static void startMethodCalls(String name) {
+      if (currentClassMethodInfo.size() == 0) return;
       var calls = new MethodCalls();
       calls.setMethodName(name);
       currentMethodCalls.push(calls);
@@ -176,6 +179,7 @@ public class JavaParser
   }
 
   private static void addMethodCall(String type, String name) {
+      if (currentMethodCalls.size() == 0) return;
       if (type.equals("this")) {
           // appel de methode a la classe elle meme
           type = varClass;
@@ -195,22 +199,19 @@ public class JavaParser
   }
 
   private static void endMethodCalls() {
+      if (currentMethodCalls.size() == 0) return;
       storage.removeMethodVars(currentMethodCalls.peek().getMethodName());
       currentClassMethodInfo.peek().addCalls(currentMethodCalls.pop());
   }
 
   private static void endClassInfo() {
+      if (currentClassMethodInfo.size() == 0) return;
       storage.removeClassVars(currentClassMethodInfo.peek().getName());
       classMethodInfos.add(currentClassMethodInfo.pop());
   }
 
   private static void addVariable(String className, String methodName, String type, String key) {
-      System.out.println("Added variable " + type + " " + key);
       storage.add(className, methodName, type, key);
-      setVarClassName(null);
-      setVarMethodName(null);
-      setVarType(null);
-      setVarKey(null);
   }
 
   private static void setVarClassName(String className) {
@@ -228,7 +229,7 @@ public class JavaParser
   private static void setVarKey(String key) {
        varKey = key;
   }
-  
+
 }
 
 PARSER_END(JavaParser)
@@ -650,14 +651,15 @@ void TypeDeclaration():
 
 void ClassOrInterfaceDeclaration():
 {
+    boolean hasClass = false;
 	Token className;
 }
 {
     
       ( 
-          "class" | "interface" 
+          "class" {hasClass = true;} | "interface"
       )
-      className=<IDENTIFIER> {startClassInfo(className.toString());}
+      className=<IDENTIFIER> {if (hasClass) startClassInfo(className.toString());}
       [ TypeParameters() ]
       [ ExtendsList() ]
       [ ImplementsList() ]
@@ -820,32 +822,27 @@ void ClassOrInterfaceBodyDeclaration():
 
 void FieldDeclaration():
 {
- String className = varClass;
- String methodName = varMethod;
- String type;
 }
 {
     
 
         (
             // Modifiers are already matched in the caller
-            Type() {type=varType;}VariableDeclarator()
+            Type() VariableDeclarator()
             (
-                "," {varType=type; addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}VariableDeclarator()
+                "," VariableDeclarator()
             )*
             ";"
-        ) {addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}
+        )
 }
 
 void VariableDeclarator():
 {
-    String className = varClass;
-    String methodName = varMethod;
 }
 {
     
         (
-            VariableDeclaratorId(){addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);} [ "=" VariableInitializer() ]
+            VariableDeclaratorId(){addVariable(varClass, varMethod, varType, varKey);} [ "=" VariableInitializer() ]
         )
 }
 
@@ -929,8 +926,6 @@ void FormalParameters():
 
 void FormalParameter():
 {
- String className = varClass;
- String methodName = varMethod;
 }
 {
     
@@ -941,7 +936,7 @@ void FormalParameter():
         <ELLIPSIS>  // ...
        ]
        VariableDeclaratorId()
-      ) {addVariable(varClass, varMethod, varType, varKey); setVarClassName(className); setVarMethodName(methodName);}
+      ) {addVariable(varClass, varMethod, varType, varKey);}
 }
 
 void ConstructorDeclaration():
@@ -1070,17 +1065,17 @@ void PrimitiveType():
               type="boolean"
             |
               type="char"
-            | 
+            |
               type="byte"
-            | 
+            |
               type="short"
-            | 
+            |
               type="int"
-            | 
+            |
               type="long"
-            | 
+            |
               type="float"
-            | 
+            |
               type="double"
         ) {setVarType(type.toString());}
 }
@@ -1583,17 +1578,14 @@ void BlockStatement():
 
 void LocalVariableDeclaration():
 {
-    String className = varClass;
-    String methodName = varMethod;
-    String type;
 }
 {
     
       // old -- [ "final" ] Type() VariableDeclarator() ( "," VariableDeclarator() )*
       // new -- Modifiers() Type() VariableDeclarator() ( "," VariableDeclarator() )*
 
-      [LOOKAHEAD(2) Annotation()] Modifiers() Type() {type=varType;} VariableDeclarator()
-      ( "," VariableDeclarator(){addVariable(varClass, varMethod, type, varKey); setVarClassName(className); setVarMethodName(methodName);}
+      [LOOKAHEAD(2) Annotation()] Modifiers() Type() VariableDeclarator()
+      ( "," VariableDeclarator()
       )*
 }
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class MethodCalls {
     private String methodName;
-    private List<String> callees; // Class.Method TODO : this.method, method
+    private List<String> callees;
 
 
     public MethodCalls() {
@@ -21,14 +21,22 @@ public class MethodCalls {
         this.methodName = methodName;
     }
 
+    public List<String> getCallees() {
+        return callees;
+    }
+
     public void addCallee(String method) {
         callees.add(method);
     }
 
     public void print() {
-        System.out.println("\t" + methodName + " calls :");
+        if (callees.size() == 0) {
+            System.out.println("\t\t\t\t" + "Method: " + methodName + "() calls no method(s)");
+            return;
+        }
+        System.out.println("\t\t\t\t" + "Method: " + methodName + "() calls : ");
         for (String callee : callees) {
-            System.out.println("\t\t" + callee);
+            System.out.println("\t\t\t\t\t" + callee + "()");
         }
     }
 }

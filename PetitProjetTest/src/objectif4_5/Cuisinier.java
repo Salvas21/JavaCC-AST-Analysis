@@ -1,7 +1,8 @@
 package objectif4_5;
 
 public class Cuisinier {
-
+	Integer a;
+	
 	public void prepareOrange(Orange orange) {
 		orange.couper();
 		Orange.retirerPepins(orange);
@@ -11,8 +12,13 @@ public class Cuisinier {
 
 		System.out.println( "C'est pret" );
 	}
+	
+	public void toto() {
+		
+	}
 
 	public void testABC() {
+		a.equals(null);
 
 		C c = (new A()).b().c();
 		
