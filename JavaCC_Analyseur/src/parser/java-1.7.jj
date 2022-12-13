@@ -50,6 +50,14 @@ PARSER_BEGIN(JavaParser)
 package parser;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+import helpers.MethodCalls;
+import helpers.ClassMethodInfo;
+import helpers.Storage;
+import helpers.Variable;
 import helpers.UmlGrapher;
 import java.util.Stack;
 
@@ -57,13 +65,25 @@ public class JavaParser
 {
 
    private InputStream inputStream = null;
+
+   private static ArrayList<ClassMethodInfo> classMethodInfos = new ArrayList<ClassMethodInfo>();
+   private static Stack<ClassMethodInfo> currentClassMethodInfo = new Stack<ClassMethodInfo>();
+   private static Stack<MethodCalls> currentMethodCalls = new Stack<MethodCalls>();
+
+   private static Storage storage = new Storage();
+   private static String varClass = null;
+   private static String varMethod = null;
+   private static String varType = null;
+   private static String varKey = null;
+
+   private static String lastType = null;
    private static UmlGrapher grapher;
    private static Stack<UmlGrapher> graphStack;
 
 
     /**
      * Constructor for JavaParser.
-     * @param fileName name of the file to parse
+     * @param filename name of the file to parse
      */
    public JavaParser(String filename)
    {
@@ -77,7 +97,7 @@ public class JavaParser
       }
    }
 
-   JavaParser(JavaCharStream stream) {
+   public JavaParser(JavaCharStream stream) {
         jj_input_stream = stream;
         token_source = new JavaParserTokenManager(jj_input_stream);
         token = new Token();
@@ -100,21 +120,16 @@ public class JavaParser
   // the command line:
   // for f in /some/directory/full/of/java/files/*.java; do java -cp . JavaParser $f; done
   public static void main(String args[]) {
-    File f = new File(args[0]);
-    String[] pathNames = f.list();
-    JavaParser parser;
-    for(String pathName: pathNames) {
-      grapher = null;
-      graphStack = new Stack<UmlGrapher>();
-      if (args.length == 0) {
+    JavaParser parser = null;
+    if (args.length == 0) {
       System.out.println("Java Parser Version 1.7:  Reading from standard input...");
       parser = new JavaParser(System.in);
     } else if (args.length == 1) {
-      System.out.println("Java Parser Version 1.7:  Reading from file " + args[0] + "/" + pathName + "...");
+      System.out.println("Java Parser Version 1.7:  Reading from file " + args[0] + "...");
       try {
-        parser = new JavaParser(new java.io.FileInputStream(args[0] + "/" + pathName));
+        parser = new JavaParser(new java.io.FileInputStream(args[0]));
       } catch (java.io.FileNotFoundException e) {
-        System.out.println("Java Parser Version 1.7:  File " + args[0] + "/" + pathName + " not found.");
+        System.out.println("Java Parser Version 1.7:  File " + args[0] + " not found.");
         return;
       }
     } else {
@@ -125,40 +140,120 @@ public class JavaParser
       return;
     }
     try {
-      parser.CompilationUnit();
+        if (parser != null) {
+              grapher = null;
+              graphStack = new Stack<UmlGrapher>();
+              parser.CompilationUnit();
+              printMethodCallsResult();
+        } else {
+            parse(parser, args[0]);
+        }
+
       System.out.println("Java Parser Version 1.7:  Java program parsed successfully.");
     } catch (ParseException e) {
       System.out.println(e.getMessage());
       System.out.println("Java Parser Version 1.7:  Encountered errors during parse.");
     }
-    }
-//    if (args.length == 0) {
-//      System.out.println("Java Parser Version 1.7:  Reading from standard input...");
-//      parser = new JavaParser(System.in);
-//    } else if (args.length == 1) {
-//      System.out.println("Java Parser Version 1.7:  Reading from file " + args[0] + "...");
-//      try {
-//        parser = new JavaParser(new java.io.FileInputStream(args[0]));
-//      } catch (java.io.FileNotFoundException e) {
-//        System.out.println("Java Parser Version 1.7:  File " + args[0] + " not found.");
-//        return;
-//      }
-//    } else {
-//      System.out.println("Java Parser Version 1.7:  Usage is one of:");
-//      System.out.println("         java JavaParser < inputfile");
-//      System.out.println("OR");
-//      System.out.println("         java JavaParser inputfile");
-//      return;
-//    }
-//    try {
-//      parser.CompilationUnit();
-//      System.out.println("Java Parser Version 1.7:  Java program parsed successfully.");
-//    } catch (ParseException e) {
-//      System.out.println(e.getMessage());
-//      System.out.println("Java Parser Version 1.7:  Encountered errors during parse.");
-//    }
+    
   }
-  
+
+  private static void parse(JavaParser parser, String path) throws ParseException {
+      System.out.println("Java Parser Version 1.7:  Reading from file or directory " + path + "...");
+        try {
+            File file = new File(path);
+            if (file.isDirectory()) {
+                for (File childFile : file.listFiles()) {
+                    parser = new JavaParser(new java.io.FileInputStream(childFile));
+                    parser.CompilationUnit();
+                }
+            } else {
+                parser = new JavaParser(new java.io.FileInputStream(file));
+                parser.CompilationUnit();
+            }
+            printMethodCallsResult();
+        } catch (java.io.FileNotFoundException e) {
+          System.out.println("Java Parser Version 1.7:  File " + path + " not found.");
+          return;
+        } catch (ParseException e) {
+            throw e;
+        }
+  }
+
+  private static void printMethodCallsResult() {
+      System.out.println("\nOBJECTIF 4 & 5");
+      System.out.println("----------------------------------------");
+  	  for (var info : classMethodInfos) {
+          info.print();
+      }
+  }
+
+  private static void startClassInfo(String name) {
+      var info = new ClassMethodInfo();
+      info.setName(name);
+      currentClassMethodInfo.push(info);
+      setVarClassName(name);
+  }
+
+  private static void startMethodCalls(String name) {
+      if (currentClassMethodInfo.size() == 0) return;
+      var calls = new MethodCalls();
+      calls.setMethodName(name);
+      currentMethodCalls.push(calls);
+      setVarMethodName(name);
+  }
+
+  private static void addMethodCall(String type, String name) {
+      if (currentMethodCalls.size() == 0) return;
+      if (type.equals("this")) {
+          // appel de methode a la classe elle meme
+          type = varClass;
+      } else if (type.equals("")) {
+          // appel de methode en chaine donc a pas de type ex: .b().c()
+          // peut determiner l'appel d'un premiere methode a l'aide du dernier type de reference trouvé
+          type = "?";
+          if (lastType != null) {
+            type = lastType;
+            lastType = null;
+          }
+      } else {
+          type = storage.getType(type);
+      }
+
+      currentMethodCalls.peek().addCallee(type + "." + name);
+  }
+
+  private static void endMethodCalls() {
+      if (currentMethodCalls.size() == 0) return;
+      storage.removeMethodVars(currentMethodCalls.peek().getMethodName());
+      currentClassMethodInfo.peek().addCalls(currentMethodCalls.pop());
+  }
+
+  private static void endClassInfo() {
+      if (currentClassMethodInfo.size() == 0) return;
+      storage.removeClassVars(currentClassMethodInfo.peek().getName());
+      classMethodInfos.add(currentClassMethodInfo.pop());
+  }
+
+  private static void addVariable(String className, String methodName, String type, String key) {
+      storage.add(className, methodName, type, key);
+  }
+
+  private static void setVarClassName(String className) {
+      varClass = className;
+  }
+
+  private static void setVarMethodName(String methodName) {
+      varMethod = methodName;
+  }
+
+  private static void setVarType(String type) {
+      varType = type;
+  }
+
+  private static void setVarKey(String key) {
+       varKey = key;
+  }
+
 }
 
 PARSER_END(JavaParser)
@@ -580,15 +675,17 @@ void TypeDeclaration():
 
 void ClassOrInterfaceDeclaration():
 {
-  Token t;
+    boolean hasClass = false;
+	  Token className;
 }
 {
     
       ( 
-          "class" | "interface" 
+          "class" {hasClass = true;} | "interface"
       )
-      t=<IDENTIFIER>
+      className=<IDENTIFIER>
       {
+        if (hasClass) startClassInfo(className.toString());
         if (grapher != null) {
           graphStack.push(grapher);
       	}
@@ -605,6 +702,7 @@ void ClassOrInterfaceDeclaration():
       Java 1.5 compiler doesn't mind it, but this parser whined if the class has a
       semi-colon after the last }. */
       [ LOOKAHEAD(2) <SEMICOLON> ]
+
       {
 		grapher.printResult();
 		if (!graphStack.isEmpty()) {
@@ -723,6 +821,7 @@ void ClassOrInterfaceBody():
             )*
             "}"
         )
+        {endClassInfo();}
 }
 
 void ClassOrInterfaceBodyDeclaration():
@@ -781,19 +880,21 @@ void VariableDeclarator():
 {
     
         (
-            VariableDeclaratorId() [ "=" VariableInitializer() ]
+            VariableDeclaratorId(){addVariable(varClass, varMethod, varType, varKey);} [ "=" VariableInitializer() ]
         )
 }
 
 void VariableDeclaratorId():
 {
+ Token varId;
 }
 {
     
-        <IDENTIFIER>
+        varId=<IDENTIFIER>
         ( 
             "[" "]" 
         )*
+        {setVarKey(varId.toString());}
 }
 
 void VariableInitializer():
@@ -829,15 +930,17 @@ void MethodDeclaration():
           MethodDeclarator() [ "throws" NameList() ]
           ( Block() | ";" )
         )
+        {endMethodCalls();}
 }
 
 void MethodDeclarator():
 {
+ Token methodName;
 }
 {
     
         (
-            <IDENTIFIER> FormalParameters() ( "[" "]" )*
+            methodName=<IDENTIFIER> FormalParameters() ( "[" "]" )* {startMethodCalls(methodName.toString());}
         )
 }
 
@@ -871,22 +974,24 @@ void FormalParameter():
         <ELLIPSIS>  // ...
        ]
        VariableDeclaratorId()
-      )
+      ) {addVariable(varClass, varMethod, varType, varKey);}
 }
 
 void ConstructorDeclaration():
 {
+ Token constructorName;
 }
 {
     
         (
             [ Annotation() ]
             [ TypeParameters() ]
-            <IDENTIFIER> FormalParameters() [ "throws" NameList() ]
+            constructorName=<IDENTIFIER> FormalParameters() [ "throws" NameList() ] {startMethodCalls(constructorName.toString());}
             "{"
                 [ LOOKAHEAD(ExplicitConstructorInvocation()) ExplicitConstructorInvocation() ]
             ( BlockStatement() )*
             "}"
+            {endMethodCalls();}
         )
 }
 
@@ -936,16 +1041,16 @@ void ReferenceType():
 
 void ClassOrInterfaceType():
 {
-  Token t;
+  Token type;
 }
 {
     
         (
-          t=<IDENTIFIER> {grapher.addClass(t.toString());}[ LOOKAHEAD(2) TypeArguments() ]
+          type=<IDENTIFIER> {grapher.addClass(type.toString());}[ LOOKAHEAD(2) TypeArguments() ]
           ( LOOKAHEAD(2) "." 
               <IDENTIFIER> [ LOOKAHEAD(2) TypeArguments() ]
           )*
-        )
+        ) {setVarType(type.toString()); lastType=type.toString();}
 }
 
 void TypeArguments():
@@ -990,26 +1095,27 @@ void WildcardBounds():
 
 void PrimitiveType():
 {
+ Token type;
 }
 {
     
         (
-              "boolean"
+              type="boolean"
             |
-              "char"
-            | 
-              "byte"
-            | 
-              "short" 
-            | 
-              "int"
-            | 
-              "long"
-            | 
-              "float"
-            | 
-              "double" 
-        )
+              type="char"
+            |
+              type="byte"
+            |
+              type="short"
+            |
+              type="int"
+            |
+              type="long"
+            |
+              type="float"
+            |
+              type="double"
+        ) {setVarType(type.toString());}
 }
 
 void ResultType():
@@ -1031,14 +1137,15 @@ void Name():
  * by a ".*" when used in the context of an "ImportDeclaration".
  */
 {
+	Token varName;
+	Token methodName = null;
 }
 {
-    
-
-        <IDENTIFIER>
+        varName=<IDENTIFIER>
         (
-            LOOKAHEAD(2)
-            "." <IDENTIFIER>
+              LOOKAHEAD( "." <IDENTIFIER> "(" ) "." methodName=<IDENTIFIER> Arguments() {addMethodCall(varName.toString(), methodName.toString());}
+            |
+              LOOKAHEAD(2) "." <IDENTIFIER>
         )*
 }
 
@@ -1286,10 +1393,13 @@ void MemberSelector():
 
 void PrimaryPrefix():
 {
+ Token methodName;
 }
 {
     
           Literal()
+        |
+          LOOKAHEAD("this" "." <IDENTIFIER> "(") "this" "." methodName=<IDENTIFIER> Arguments() {addMethodCall("this", methodName.toString());}
         |
           "this"
         |
@@ -1308,11 +1418,15 @@ void PrimaryPrefix():
           LOOKAHEAD( ResultType() "." "class" )
           ResultType() "." "class"
         |
+          LOOKAHEAD(<IDENTIFIER> "(") methodName=<IDENTIFIER> Arguments() {addMethodCall("this", methodName.toString());}
+        |
           Name()
 }
 
 void PrimarySuffix():
 {
+    Token attribute;
+	Token weirdMethod;
 }
 {
     
@@ -1326,6 +1440,10 @@ void PrimarySuffix():
           MemberSelector()
         |
           "[" Expression() "]"
+        |
+          LOOKAHEAD( "." <IDENTIFIER> "." <IDENTIFIER> "(" ) "." attribute=<IDENTIFIER> "." weirdMethod=<IDENTIFIER> Arguments() {addMethodCall(attribute.toString(), weirdMethod.toString());}
+        |
+          LOOKAHEAD( "." <IDENTIFIER> "(" ) "." weirdMethod=<IDENTIFIER> Arguments() {addMethodCall("", weirdMethod.toString());}
         |
           "." <IDENTIFIER>
         |
@@ -1498,7 +1616,6 @@ void BlockStatement():
 
 void LocalVariableDeclaration():
 {
-
 }
 {
     
