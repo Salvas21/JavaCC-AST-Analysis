@@ -63,6 +63,76 @@ import java.util.Stack;
 
 public class JavaParser
 {
+	class VariableType
+	{
+		private int nbPublic = 0;
+		private int nbPrivate = 0;
+		private int nbProtected = 0;
+		private int nbSimple = 0;
+		private int nbObject = 0;
+		private String classe = "";
+		private String subClasse = "";
+	
+	  	public VariableType() { ; }
+
+	  	public void addPublic(int add)
+	  	{
+	  	  nbPublic += add;
+	  	}
+
+	  	public void addPrivate(int add)
+	  	{
+	  	  nbPrivate += add;
+	  	}
+
+	  	public void addProtected(int add)
+	  	{
+	  	  nbProtected += add;
+	  	}
+
+	  	public void addSimple(int add)
+	  	{
+	  	  nbSimple += add;
+	  	}
+
+	  	public void addObject(int add)
+	  	{
+	  	  nbObject += add;
+	  	}
+
+	  	public void setClasse(String classe)
+	  	{
+	  	  this.classe = classe;
+	  	}
+
+	  	public void addSubClasse(String classe)
+	  	{
+	  	  if (subClasse != "")
+	  	  {
+	  	    subClasse += ",";
+	  	  }
+	  	  subClasse += classe;
+	  	}
+
+	  	public String toString()
+	  	{
+	  	  	int total = nbPublic + nbPrivate + nbProtected;
+	  	  	String sc = "";
+
+	  	  	if (subClasse != "")
+	  	  	{
+	  	  	  sc = "\n\nClasse avec visibilite permanente: " + subClasse;
+	  	  	}
+	  	  	
+			return "\n****************************************\nCLASSE: " + classe
+		    + "\nAttribut publique: \t" + String.format("%.1f",nbPublic * 100.0 / total) + "%\t (" + nbPublic + ")"
+		    + "\nAttribut prive: \t" + String.format("%.1f",nbPrivate * 100.0 / total)  + "%\t (" + nbPrivate + ")"
+		    + "\nAttribut protege: \t" + String.format("%.1f",nbProtected * 100.0 / total)  + "%\t (" + nbProtected + ")"
+			+ "\n\nAttribut simple: \t" + String.format("%.1f",nbSimple * 100.0 / total)  + "%\t (" + nbSimple + ")"
+			+ "\nAttribut objet: \t" + String.format("%.1f",nbObject * 100.0 / total)  + "%\t (" + nbObject + ")"
+			+ sc + "\n****************************************";
+		}
+	}
 
    private InputStream inputStream = null;
 
@@ -613,38 +683,40 @@ void  ImportDeclaration():
  * TODO: write productions for the actual modifiers allowed for each construct.
  */
 
-void Modifiers():
+Token Modifiers():
 {
+  Token m = null;
 }
 {
  (
-  LOOKAHEAD(2)
-  (
-   <PUBLIC>
+   LOOKAHEAD(2)
+   (
+   m=<PUBLIC>
   |
-   <STATIC>
+   m=<STATIC>
   |
-   <PROTECTED>
+   m=<PROTECTED>
   |
-   <PRIVATE> 
+   m=<PRIVATE> 
   |
-   <FINAL>
+   m=<FINAL>
   |
-   <ABSTRACT>
+   m=<ABSTRACT>
   |
-   <SYNCHRONIZED>
+   m=<SYNCHRONIZED>
   |
-   <NATIVE> 
+   m=<NATIVE> 
   |
-   <TRANSIENT>
+   m=<TRANSIENT>
   |
-   <VOLATILE>
+   m=<VOLATILE>
   |
-   <STRICTFP>
+   m=<STRICTFP>
   |
    Annotation()
   )
  )*
+ { return m; }
 }
 
 /*
@@ -673,11 +745,19 @@ void TypeDeclaration():
 
 void ClassOrInterfaceDeclaration():
 {
-    boolean hasClass = false;
-	  Token className;
 }
 {
-    
+	ClassOrInterfaceDeclaration2(null)
+}
+
+void ClassOrInterfaceDeclaration2(VariableType subVt):
+{
+  boolean hasClass = false;
+	Token className;
+  Token t = null;
+  VariableType vt = new VariableType();
+}
+{
       ( 
           "class" {hasClass = true;} | "interface"
       )
@@ -690,10 +770,17 @@ void ClassOrInterfaceDeclaration():
       	grapher = new UmlGrapher(className.toString());
     	
       }
+      {
+      	vt.setClasse(className.toString());
+      	if (subVt != null)
+      	{
+      	  subVt.addSubClasse(className.toString());
+      	}
+      }
       [ TypeParameters() ]
       [ ExtendsList() ]
       [ ImplementsList() ]
-      ClassOrInterfaceBody()
+      ClassOrInterfaceBody2(vt)
 
       /* danson, added this check for trailing semi-colon.  Apparently, this has been
       legal since the beginning of Java, some sort of a C hold-over.  Sun's latest
@@ -810,32 +897,51 @@ void ClassOrInterfaceBody():
 {
 }
 {
-    
+  ClassOrInterfaceBody2(null)
+}
 
+void ClassOrInterfaceBody2(VariableType vt):
+{
+}
+{
         (
             "{"
             (
-                ClassOrInterfaceBodyDeclaration()
+                ClassOrInterfaceBodyDeclaration2(vt)
             )*
             "}"
         )
         {endClassInfo();}
+
+        {
+          if (vt != null)
+          {
+            System.out.println(vt);
+          }
+        }
 }
 
 void ClassOrInterfaceBodyDeclaration():
 {
 }
 {
-    
+  ClassOrInterfaceBodyDeclaration2(null)
+}
+
+void ClassOrInterfaceBodyDeclaration2(VariableType vt):
+{
+  Token mod;
+}
+{
           (
           LOOKAHEAD(2)
           Initializer()
         |
-          Modifiers() // Just get all the modifiers out of the way. If you want to do
+          mod=Modifiers() // Just get all the modifiers out of the way. If you want to do
                       // more checks, pass the modifiers down to the member
           (
               LOOKAHEAD(3)
-              ClassOrInterfaceDeclaration()
+              ClassOrInterfaceDeclaration2(vt)
             |
               EnumDeclaration()
             |
@@ -843,13 +949,12 @@ void ClassOrInterfaceBodyDeclaration():
               ConstructorDeclaration()
             |
               LOOKAHEAD( Type() <IDENTIFIER> ( "[" "]" )* ( "," | "=" | ";" ) )
-              FieldDeclaration()
+              FieldDeclaration2(vt, mod)
             |
               LOOKAHEAD(2)
               AnnotationTypeDeclaration()
             |
               MethodDeclaration()
-
           )
         |
           ";"  
@@ -860,16 +965,57 @@ void FieldDeclaration():
 {
 }
 {
-    
+	FieldDeclaration2(null, null)
+}
 
+void FieldDeclaration2(VariableType vt, Token mod):
+{
+  int nb = 0;
+  Boolean estObject;
+}
+{
         (
             // Modifiers are already matched in the caller
-            Type() VariableDeclarator()
+            estObject = Type() VariableDeclarator() { nb++; }
             (
-                "," VariableDeclarator()
+                "," VariableDeclarator() { nb++; }
             )*
             ";"
         )
+        {
+            if (vt != null)
+            {
+              	if (mod == null)
+              	{
+              	  	vt.addPublic(nb);
+              	}
+              	else
+              	{
+	                switch(mod.toString())
+	                {
+	                  case "public":
+	                  case "":
+	                  	vt.addPublic(nb);
+	                  	break;
+	                  case "private":
+	                  	vt.addPrivate(nb);
+	                  	break;
+	                  case "protected":
+	                  	vt.addProtected(nb);
+	                  	break;
+	                }
+              	}
+
+              	if (estObject)
+              	{
+              	  vt.addObject(nb);
+              	}
+              	else
+              	{
+              	  vt.addSimple(nb);
+              	}
+            }
+        }
 }
 
 void VariableDeclarator():
@@ -1012,16 +1158,24 @@ void Initializer():
         [ <STATIC> ] Block()
 }
 
-void Type():
+/*void Type():
 {
 }
 {
-    
+	Type2(null)
+}*/
+
+Boolean Type()://VariableType vt):
+{
+  Boolean estObject = null;
+}
+{
         (
-         LOOKAHEAD(2) ReferenceType()
+         LOOKAHEAD(2) ReferenceType() { estObject = true; } //{ if(vt != null) { vt.addObject(1); } }
         |
-         PrimitiveType()
+         PrimitiveType() { estObject = false; } //{ if(vt != null) { vt.addSimple(1); } }
         )
+        { return estObject; }
 }
 
 void ReferenceType():

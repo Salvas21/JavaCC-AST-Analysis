@@ -16,4 +16,8 @@ public class Objectif2Interne {
 		protected int prot;
 		
 	}
+	class Interne2{
+		protected int prot;
+		
+	}
 }
