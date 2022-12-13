@@ -43,7 +43,7 @@ options {
   JAVA_UNICODE_ESCAPE = true;
   //ERROR_REPORTING = true;
   STATIC = false;
-  //DEBUG_PARSER = true;
+//DEBUG_PARSER = true;
 }
 
 PARSER_BEGIN(JavaParser)
@@ -58,6 +58,8 @@ import helpers.MethodCalls;
 import helpers.ClassMethodInfo;
 import helpers.Storage;
 import helpers.Variable;
+import helpers.UmlGrapher;
+import java.util.Stack;
 
 public class JavaParser
 {
@@ -75,6 +77,9 @@ public class JavaParser
    private static String varKey = null;
 
    private static String lastType = null;
+   private static UmlGrapher grapher;
+   private static Stack<UmlGrapher> graphStack;
+
 
     /**
      * Constructor for JavaParser.
@@ -120,7 +125,7 @@ public class JavaParser
       System.out.println("Java Parser Version 1.7:  Reading from standard input...");
       parser = new JavaParser(System.in);
     } else if (args.length == 1) {
-      // ok keep going will parse directory/file later
+      // ok keep going
     } else {
       System.out.println("Java Parser Version 1.7:  Usage is one of:");
       System.out.println("         java JavaParser < inputfile");
@@ -130,6 +135,8 @@ public class JavaParser
     }
     try {
         if (parser != null) {
+              grapher = null;
+              graphStack = new Stack<UmlGrapher>();
               parser.CompilationUnit();
               printMethodCallsResult();
         } else {
@@ -150,10 +157,14 @@ public class JavaParser
             File file = new File(path);
             if (file.isDirectory()) {
                 for (File childFile : file.listFiles()) {
+                    grapher = null;
+                    graphStack = new Stack<UmlGrapher>();
                     parser = new JavaParser(new java.io.FileInputStream(childFile));
                     parser.CompilationUnit();
                 }
             } else {
+                grapher = null;
+                graphStack = new Stack<UmlGrapher>();
                 parser = new JavaParser(new java.io.FileInputStream(file));
                 parser.CompilationUnit();
             }
@@ -663,14 +674,22 @@ void TypeDeclaration():
 void ClassOrInterfaceDeclaration():
 {
     boolean hasClass = false;
-	Token className;
+	  Token className;
 }
 {
     
       ( 
           "class" {hasClass = true;} | "interface"
       )
-      className=<IDENTIFIER> {if (hasClass) startClassInfo(className.toString());}
+      className=<IDENTIFIER>
+      {
+        if (hasClass) startClassInfo(className.toString());
+        if (grapher != null) {
+          graphStack.push(grapher);
+      	}
+      	grapher = new UmlGrapher(className.toString());
+    	
+      }
       [ TypeParameters() ]
       [ ExtendsList() ]
       [ ImplementsList() ]
@@ -682,6 +701,12 @@ void ClassOrInterfaceDeclaration():
       semi-colon after the last }. */
       [ LOOKAHEAD(2) <SEMICOLON> ]
 
+      {
+		grapher.printResult();
+		if (!graphStack.isEmpty()) {
+		  grapher = graphStack.pop();
+	  	}
+      }
 }
 
 void ExtendsList():
@@ -690,7 +715,7 @@ void ExtendsList():
 {
     
 
-       "extends" ClassOrInterfaceType()
+       "extends" {grapher.setExtendName(getToken(1).toString()); }ClassOrInterfaceType()
        ( "," ClassOrInterfaceType() )*
 
 }
@@ -701,7 +726,7 @@ void ImplementsList():
 {
     
 
-        "implements" ClassOrInterfaceType()
+        "implements" {grapher.addInterface(getToken(1).toString());}ClassOrInterfaceType()
        ( "," ClassOrInterfaceType() )*
 
 }
@@ -760,7 +785,7 @@ void TypeParameter():
 {
     
         (
-            <IDENTIFIER> [ TypeBound() ]
+           <IDENTIFIER> [ TypeBound() ]
         )
 
 }
@@ -1014,12 +1039,12 @@ void ReferenceType():
 
 void ClassOrInterfaceType():
 {
- Token type;
+  Token type;
 }
 {
     
         (
-          type=<IDENTIFIER> [ LOOKAHEAD(2) TypeArguments() ]
+          type=<IDENTIFIER> {grapher.addClass(type.toString());}[ LOOKAHEAD(2) TypeArguments() ]
           ( LOOKAHEAD(2) "." 
               <IDENTIFIER> [ LOOKAHEAD(2) TypeArguments() ]
           )*
@@ -1032,7 +1057,7 @@ void TypeArguments():
 {
     
         (
-         <DIAMOND>   
+         <DIAMOND> 
         )
         |
         (
