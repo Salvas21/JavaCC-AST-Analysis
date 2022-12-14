@@ -1,4 +1,7 @@
-package ast_helloworld.handlers;
+package ast_analyseur.handlers;
+
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -21,14 +24,14 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import ast_helloworld.visitors.CustomVisitor;
+import ast_analyseur.visitors.CustomVisitor;
 
 public class SampleHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		MessageDialog.openInformation(window.getShell(), "AST_HelloWorld", "Hello, Eclipse world");
+		MessageDialog.openInformation(window.getShell(), "AST_Analyseur", "Hello, Eclipse world");
 
 		// Get the root of the workspace
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -36,15 +39,14 @@ public class SampleHandler extends AbstractHandler {
 		// Get all projects in the workspace
 		IProject[] projects = root.getProjects();
 		// Loop over all projects
-		
-		
+
 		for (IProject project : projects) {
 			try {
 				if (!project.isOpen())
 					continue;
 
 				exploreProject(project);
-			
+
 
 			} catch (CoreException e) {
 				e.printStackTrace();
@@ -55,39 +57,44 @@ public class SampleHandler extends AbstractHandler {
 	}
 
 	private void exploreProject(IProject project) throws CoreException {
-				if (!project.isOpen()) // Analyse only open projects
-					return;
+		if (!project.isOpen()) // Analyse only open projects
+			return;
 
-				System.out.println("Working in project " + project.getName());
-				// check if we have a Java project
-				if (project.isNatureEnabled("org.eclipse.jdt.core.javanature")) {
-					IJavaProject javaProject = JavaCore.create(project);
-					explorePackage(javaProject);
+		System.out.println("Working in project " + project.getName());
+		// check if we have a Java project
+		if (project.isNatureEnabled("org.eclipse.jdt.core.javanature")) {
+			IJavaProject javaProject = JavaCore.create(project);
+			explorePackage(javaProject);
 
-					System.out.println("Project (" + project.getName() + ") done");
-				}
+			System.out.println("Project (" + project.getName() + ") done");
+		}
 	}
 
 	private void explorePackage(IJavaProject javaProject) throws JavaModelException {
 
 		IPackageFragment[] packages = javaProject.getPackageFragments();
-		for (IPackageFragment mypackage : packages) {
-			// Package fragments include all packages in the
-			// classpath
-			// We will only look at the packages from the source
-			// folder
+		try {
+			FileWriter resultsFile = new FileWriter("/Users/salvas/Documents/Universite/3_Session_Automne_2022/Analyse_programme/Projet-analyse/AST_Analyseur/src/results.txt", false);
+			for (IPackageFragment mypackage : packages) {
+				// Package fragments include all packages in the
+				// classpath
+				// We will only look at the packages from the source
+				// folder
 
-			if (mypackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
-				System.out.println("_________________________________________");
-				System.out.println("Package " + mypackage.getElementName());
-				exploreCompiplationUnit(mypackage);
-
+				if (mypackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
+					System.out.println("_________________________________________");
+					System.out.println("Package " + mypackage.getElementName());
+					exploreCompiplationUnit(mypackage, resultsFile);
+				}
 			}
-
+			resultsFile.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
-	private void exploreCompiplationUnit(IPackageFragment mypackage) throws JavaModelException {
+	private void exploreCompiplationUnit(IPackageFragment mypackage, FileWriter resultsFile) throws JavaModelException {
 		for (ICompilationUnit unit : mypackage.getCompilationUnits()) {
 
 			System.out.println("_________________________________________");
@@ -96,10 +103,9 @@ public class SampleHandler extends AbstractHandler {
 
 			CompilationUnit parse = parseUnit(unit);
 			CustomVisitor visitor = new CustomVisitor();
-			
 			try {
-				
 				parse.accept(visitor);
+				visitor.print(resultsFile);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -111,6 +117,7 @@ public class SampleHandler extends AbstractHandler {
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		parser.setSource(unit);
 		parser.setResolveBindings(true);
+		parser.setBindingsRecovery(true);
 		return (CompilationUnit) parser.createAST(null);
 	}
 }
