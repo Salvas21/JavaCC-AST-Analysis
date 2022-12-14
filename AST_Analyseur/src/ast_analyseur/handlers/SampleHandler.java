@@ -1,7 +1,10 @@
 package ast_analyseur.handlers;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -74,7 +77,9 @@ public class SampleHandler extends AbstractHandler {
 
 		IPackageFragment[] packages = javaProject.getPackageFragments();
 		try {
-			FileWriter resultsFile = new FileWriter("/Users/salvas/Documents/Universite/3_Session_Automne_2022/Analyse_programme/Projet-analyse/AST_Analyseur/src/results.txt", false);
+			System.err.println("CHANGE ABSOLUTE PATH OF RESULTS FILE IN 'SampleHandler.java -> explorePackage'");
+			String path = "/Users/salvas/Documents/Universite/3_Session_Automne_2022/Analyse_programme/Projet-analyse/AST_Analyseur/results.txt";
+			FileWriter resultsFile = new FileWriter(path, false);
 			for (IPackageFragment mypackage : packages) {
 				// Package fragments include all packages in the
 				// classpath
@@ -96,10 +101,7 @@ public class SampleHandler extends AbstractHandler {
 
 	private void exploreCompiplationUnit(IPackageFragment mypackage, FileWriter resultsFile) throws JavaModelException {
 		for (ICompilationUnit unit : mypackage.getCompilationUnits()) {
-
-			System.out.println("_________________________________________");
-			System.out.println("Package " + mypackage.getElementName());
-			System.out.println("CompUnit " + unit.getElementName());
+			System.out.println("Parsing " + unit.getElementName());
 
 			CompilationUnit parse = parseUnit(unit);
 			CustomVisitor visitor = new CustomVisitor();
