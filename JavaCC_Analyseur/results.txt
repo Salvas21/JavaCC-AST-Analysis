@@ -1,0 +1,3061 @@
+
+****************************************
+CLASSE: ANetworkModel
+Attribut publique: 	0.0%	 (0)
+Attribut prive: 	0.0%	 (0)
+Attribut protege: 	100.0%	 (1)
+
+Attribut simple: 	100.0%	 (1)
+Attribut objet: 	0.0%	 (0)
+****************************************
+===== ANetworkModel =====
+ANetworkModel ..> Thread
+ANetworkModel --> NetworkMsg
+ANetworkModel --> Socket
+
+
+****************************************
+CLASSE: Room
+Attribut publique: 	50.0%	 (1)
+Attribut prive: 	50.0%	 (1)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	50.0%	 (1)
+Attribut objet: 	50.0%	 (1)
+****************************************
+===== Room =====
+Room --> TeamNumber
+Room --> Team
+
+
+****************************************
+CLASSE: NetworkServer
+Attribut publique: 	100.0%	 (4)
+Attribut prive: 	0.0%	 (0)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	25.0%	 (1)
+Attribut objet: 	75.0%	 (3)
+****************************************
+===== NetworkServer =====
+NetworkServer ..> ANetworkModel
+NetworkServer --> NetworkMsg
+NetworkServer --> ClientConnected
+NetworkServer --> Network
+NetworkServer --> ArrayList
+NetworkServer --> ServerSocket
+NetworkServer --> IOException
+NetworkServer --> Socket
+
+
+****************************************
+CLASSE: Client
+Attribut publique: 	100.0%	 (12)
+Attribut prive: 	0.0%	 (0)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	41.7%	 (5)
+Attribut objet: 	58.3%	 (7)
+****************************************
+===== Client =====
+Client --> Player
+Client --> Game
+Client --> GameRun
+Client --> Network
+Client --> gameState
+Client --> Client
+Client --> Room
+
+
+****************************************
+CLASSE: Team
+Attribut publique: 	100.0%	 (2)
+Attribut prive: 	0.0%	 (0)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	50.0%	 (1)
+Attribut objet: 	50.0%	 (1)
+****************************************
+===== Team =====
+Team --> Player
+Team --> PlayerType
+Team --> Room
+
+
+****************************************
+CLASSE: Pair
+Attribut publique: 	100.0%	 (2)
+Attribut prive: 	0.0%	 (0)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	0.0%	 (0)
+Attribut objet: 	100.0%	 (2)
+****************************************
+===== Pair =====
+Pair --> T1
+Pair --> T2
+
+
+****************************************
+CLASSE: MenuPlay
+Attribut publique: 	18.2%	 (2)
+Attribut prive: 	81.8%	 (9)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	18.2%	 (2)
+Attribut objet: 	81.8%	 (9)
+****************************************
+===== MenuPlay =====
+MenuPlay ..> BasicGameState
+MenuPlay ..> ComponentListener
+MenuPlay --> StateBasedGame
+MenuPlay --> Color
+MenuPlay --> MouseOverArea
+MenuPlay --> NumberFormatException
+MenuPlay --> Image
+MenuPlay --> SoundManager
+MenuPlay --> Graphics
+MenuPlay --> AbstractComponent
+MenuPlay --> Input
+MenuPlay --> TextField
+MenuPlay --> GameContainer
+
+
+****************************************
+CLASSE: Network
+Attribut publique: 	100.0%	 (2)
+Attribut prive: 	0.0%	 (0)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	0.0%	 (0)
+Attribut objet: 	100.0%	 (2)
+****************************************
+===== Network =====
+Network --> NetworkClient
+Network --> NetworkMsg
+Network --> ANetworkModel
+Network --> NetworkServer
+Network --> Client
+
+
+****************************************
+CLASSE: ShootDone
+Attribut publique: 	20.0%	 (1)
+Attribut prive: 	80.0%	 (4)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	80.0%	 (4)
+Attribut objet: 	20.0%	 (1)
+****************************************
+===== ShootDone =====
+ShootDone --> Target
+ShootDone --> List
+ShootDone --> LinkedList
+
+
+****************************************
+CLASSE: MenuOptions
+Attribut publique: 	22.2%	 (2)
+Attribut prive: 	77.8%	 (7)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	22.2%	 (2)
+Attribut objet: 	77.8%	 (7)
+****************************************
+===== MenuOptions =====
+MenuOptions ..> BasicGameState
+MenuOptions ..> ComponentListener
+MenuOptions --> Graphics
+MenuOptions --> AbstractComponent
+MenuOptions --> Input
+MenuOptions --> StateBasedGame
+MenuOptions --> Color
+MenuOptions --> ArrayList
+MenuOptions --> MouseOverArea
+MenuOptions --> Image
+MenuOptions --> GameContainer
+MenuOptions --> SoundManager
+
+
+****************************************
+CLASSE: MenuCredits
+Attribut publique: 	33.3%	 (1)
+Attribut prive: 	66.7%	 (2)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	0.0%	 (0)
+Attribut objet: 	100.0%	 (3)
+****************************************
+===== MenuCredits =====
+MenuCredits ..> BasicGameState
+MenuCredits ..> ComponentListener
+MenuCredits --> Graphics
+MenuCredits --> AbstractComponent
+MenuCredits --> Input
+MenuCredits --> StateBasedGame
+MenuCredits --> Color
+MenuCredits --> MouseOverArea
+MenuCredits --> Image
+MenuCredits --> GameContainer
+MenuCredits --> SoundManager
+
+
+****************************************
+CLASSE: GameRun
+Attribut publique: 	5.3%	 (1)
+Attribut prive: 	94.7%	 (18)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	0.0%	 (0)
+Attribut objet: 	100.0%	 (19)
+****************************************
+===== GameRun =====
+GameRun ..> BasicGameState
+GameRun ..> ComponentListener
+GameRun --> StateBasedGame
+GameRun --> Color
+GameRun --> MouseOverArea
+GameRun --> ShootDone
+GameRun --> Image
+GameRun --> SoundManager
+GameRun --> Graphics
+GameRun --> Line
+GameRun --> AbstractComponent
+GameRun --> Input
+GameRun --> Target
+GameRun --> List
+GameRun --> GameContainer
+GameRun --> cameraState
+
+
+****************************************
+CLASSE: GameRoom
+Attribut publique: 	0.0%	 (0)
+Attribut prive: 	100.0%	 (7)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	0.0%	 (0)
+Attribut objet: 	100.0%	 (7)
+****************************************
+===== GameRoom =====
+GameRoom ..> BasicGameState
+GameRoom ..> ComponentListener
+GameRoom --> StateBasedGame
+GameRoom --> Color
+GameRoom --> MouseOverArea
+GameRoom --> MenuPlay
+GameRoom --> Image
+GameRoom --> SoundManager
+GameRoom --> Graphics
+GameRoom --> AbstractComponent
+GameRoom --> Input
+GameRoom --> TextField
+GameRoom --> GameContainer
+
+
+****************************************
+CLASSE: Player
+Attribut publique: 	0.0%	 (0)
+Attribut prive: 	100.0%	 (4)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	25.0%	 (1)
+Attribut objet: 	75.0%	 (3)
+****************************************
+===== Player =====
+Player --> Team
+Player --> Room
+
+
+****************************************
+CLASSE: Game
+Attribut publique: 	0.0%	 (0)
+Attribut prive: 	100.0%	 (14)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	100.0%	 (14)
+Attribut objet: 	50.0%	 (7)
+****************************************
+===== Game =====
+Game ..> Thread
+Game --> ReentrantLock
+Game --> Player
+Game --> ShootDone
+Game --> e_state
+Game --> LinkedList
+Game --> Date
+Game --> Integer
+Game --> Target
+Game --> TargetFrom
+Game --> List
+Game --> Client
+Game --> Room
+
+
+****************************************
+CLASSE: NetworkMsg
+Attribut publique: 	100.0%	 (2)
+Attribut prive: 	0.0%	 (0)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	0.0%	 (0)
+Attribut objet: 	100.0%	 (2)
+****************************************
+===== NetworkMsg =====
+NetworkMsg --> NetworkMsg
+NetworkMsg --> msgHeader
+NetworkMsg --> List
+NetworkMsg --> LinkedList
+NetworkMsg --> Pair
+
+
+****************************************
+CLASSE: GameScore
+Attribut publique: 	11.1%	 (1)
+Attribut prive: 	88.9%	 (8)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	44.4%	 (4)
+Attribut objet: 	55.6%	 (5)
+****************************************
+===== GameScore =====
+GameScore ..> BasicGameState
+GameScore ..> ComponentListener
+GameScore --> Graphics
+GameScore --> AbstractComponent
+GameScore --> Player
+GameScore --> StateBasedGame
+GameScore --> Color
+GameScore --> MouseOverArea
+GameScore --> Image
+GameScore --> GameContainer
+GameScore --> SoundManager
+
+
+****************************************
+CLASSE: SoundManager
+Attribut publique: 	0.0%	 (0)
+Attribut prive: 	100.0%	 (9)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	44.4%	 (4)
+Attribut objet: 	55.6%	 (5)
+****************************************
+===== SoundManager =====
+SoundManager --> HashMap
+SoundManager --> Music
+SoundManager --> SlickException
+SoundManager --> ArrayList
+SoundManager --> Sound
+
+
+****************************************
+CLASSE: NetworkClient
+Attribut publique: 	100.0%	 (5)
+Attribut prive: 	0.0%	 (0)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	20.0%	 (1)
+Attribut objet: 	80.0%	 (4)
+****************************************
+===== NetworkClient =====
+NetworkClient ..> ANetworkModel
+NetworkClient --> NetworkMsg
+NetworkClient --> InputStream
+NetworkClient --> Network
+NetworkClient --> OutputStream
+NetworkClient --> List
+NetworkClient --> IOException
+NetworkClient --> Socket
+NetworkClient --> Pair
+
+
+****************************************
+CLASSE: ClientConnected
+Attribut publique: 	100.0%	 (5)
+Attribut prive: 	0.0%	 (0)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	40.0%	 (2)
+Attribut objet: 	60.0%	 (3)
+****************************************
+===== ClientConnected =====
+ClientConnected ..> Thread
+ClientConnected --> NetworkMsg
+ClientConnected --> InputStream
+ClientConnected --> OutputStream
+ClientConnected --> List
+ClientConnected --> NetworkServer
+ClientConnected --> IOException
+ClientConnected --> Socket
+ClientConnected --> Pair
+
+
+****************************************
+CLASSE: Target
+Attribut publique: 	0.0%	 (0)
+Attribut prive: 	100.0%	 (4)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	100.0%	 (4)
+Attribut objet: 	0.0%	 (0)
+****************************************
+===== Target =====
+
+
+****************************************
+CLASSE: AngryPidge
+Attribut publique: 	0.0%	 (0)
+Attribut prive: 	100.0%	 (1)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	900.0%	 (9)
+Attribut objet: 	300.0%	 (3)
+****************************************
+===== AngryPidge =====
+AngryPidge ..> StateBasedGame
+AngryPidge --> SlickException
+AngryPidge --> MenuCredits
+AngryPidge --> MenuPlay
+AngryPidge --> GameRoom
+AngryPidge --> MenuOptions
+AngryPidge --> GameScore
+AngryPidge --> AppGameContainer
+AngryPidge --> SoundManager
+AngryPidge --> GameMenu
+AngryPidge --> GameRun
+AngryPidge --> AngryPidge
+AngryPidge --> Client
+AngryPidge --> GameContainer
+
+
+****************************************
+CLASSE: GameMenu
+Attribut publique: 	0.0%	 (0)
+Attribut prive: 	100.0%	 (14)
+Attribut protege: 	0.0%	 (0)
+
+Attribut simple: 	0.0%	 (0)
+Attribut objet: 	100.0%	 (14)
+****************************************
+===== GameMenu =====
+GameMenu ..> BasicGameState
+GameMenu ..> ComponentListener
+GameMenu --> Graphics
+GameMenu --> AbstractComponent
+GameMenu --> Input
+GameMenu --> StateBasedGame
+GameMenu --> Color
+GameMenu --> MouseOverArea
+GameMenu --> MenuPlay
+GameMenu --> GameContainer
+GameMenu --> Image
+GameMenu --> SoundManager
+
+OBJECTIF 4 & 5
+----------------------------------------
+
+	Class: ANetworkModel
+		Graph of direct calls between methods
+				Method: addClient() calls no method(s)
+				Method: kickClient() calls no method(s)
+				Method: runGame() calls no method(s)
+				Method: changeName() calls no method(s)
+				Method: changeTeam() calls no method(s)
+				Method: connect() calls no method(s)
+				Method: Fire() calls no method(s)
+				Method: sendFire() calls no method(s)
+				Method: getKeepRunning() calls no method(s)
+				Method: setKeepRunning() calls no method(s)
+				Method: sendMsg() calls no method(s)
+				Method: sendShoot() calls no method(s)
+				Method: close() calls no method(s)
+				Method: isHost() calls no method(s)
+		Coupling between classes:
+			No coupling between classes for this class
+
+	Class: Room
+		Graph of direct calls between methods
+				Method: Room() calls no method(s)
+				Method: AddPlayer() calls : 
+					TeamNumber.ordinal()
+					TeamNumber.AddPlayer()
+				Method: RemovePlayer() calls : 
+					TeamNumber.ordinal()
+					TeamNumber.RemovePlayer()
+				Method: ReadyToRun() calls no method(s)
+				Method: GetTeam() calls : 
+					TeamNumber.ordinal()
+				Method: GetTeamList() calls no method(s)
+		Coupling between classes:
+			Has called: TeamNumber.ordinal() 3 time(s)
+			Has called: TeamNumber.AddPlayer() 1 time(s)
+			Has called: TeamNumber.RemovePlayer() 1 time(s)
+
+	Class: NetworkServer
+		Graph of direct calls between methods
+				Method: NetworkServer() calls no method(s)
+				Method: close() calls : 
+					ServerSocket.isClosed()
+					ServerSocket.close()
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.close()
+					ArrayList.clear()
+				Method: findName() calls : 
+					Integer.toString()
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.getNameClient()
+					ArrayList.compareTo()
+					NetworkServer.findName()
+				Method: nameAlreadyExist() calls : 
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.getNameClient()
+					ArrayList.compareTo()
+				Method: findTeam() calls : 
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.getTeam()
+				Method: freePlaceInTeam() calls : 
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.getTeam()
+					ArrayList.get()
+					ArrayList.getTeam()
+				Method: canRun() calls : 
+					NetworkServer.freePlaceInTeam()
+					NetworkServer.freePlaceInTeam()
+				Method: connect() calls no method(s)
+				Method: updateRoomInfo() calls : 
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.getTeam()
+					ArrayList.get()
+					ArrayList.getNameClient()
+					ArrayList.get()
+					ArrayList.getNameClient()
+					ArrayList.get()
+					ArrayList.getTeam()
+					ArrayList.get()
+					ArrayList.getNameClient()
+					ArrayList.get()
+					ArrayList.getNameClient()
+					Network.getClient()
+					Network.updateRoom()
+					String.length()
+					String.length()
+					String.length()
+					String.length()
+					String.length()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					String.length()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					String.length()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					String.length()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					String.getBytes()
+					String.getBytes()
+					System.arraycopy()
+					String.getBytes()
+					String.getBytes()
+					String.getBytes()
+					System.arraycopy()
+					String.getBytes()
+					String.getBytes()
+					String.getBytes()
+					System.arraycopy()
+					String.getBytes()
+					String.getBytes()
+					String.getBytes()
+					System.arraycopy()
+					NetworkServer.sendMsg()
+				Method: sendHisOwnInfo() calls : 
+					ClientConnected.getNameClient()
+					ClientConnected.getBytes()
+					ClientConnected.sendMsg()
+					ClientConnected.getTeam()
+					NetworkMsg.intToBytes()
+					ClientConnected.sendMsg()
+				Method: isHost() calls : 
+					ArrayList.size()
+					ArrayList.get()
+				Method: deleteRoom() calls : 
+					NetworkServer.sendMsg()
+					Network.serverKill()
+				Method: addClient() calls : 
+					ArrayList.add()
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.start()
+					ArrayList.size()
+					ArrayList.get()
+					NetworkServer.sendHisOwnInfo()
+					NetworkServer.updateRoomInfo()
+				Method: runGame() calls : 
+					NetworkServer.canRun()
+					Network.getClient()
+					Network.launchGameServer()
+					NetworkServer.sendMsg()
+				Method: changeName() calls : 
+					String.length()
+					NetworkServer.nameAlreadyExist()
+					Network.getClient()
+					Network.getYourInfo()
+					Network.SetName()
+					ArrayList.get()
+					ArrayList.setNameClient()
+					Network.getClient()
+					Network.setCurrentName()
+					Network.getClient()
+					Network.setFlagChangeName()
+					NetworkServer.updateRoomInfo()
+				Method: changeTeam() calls : 
+					NetworkServer.freePlaceInTeam()
+					ArrayList.get()
+					ArrayList.setTeam()
+					Network.getClient()
+					Network.setTeam()
+					NetworkServer.updateRoomInfo()
+				Method: run() calls : 
+					ServerSocket.accept()
+					ArrayList.size()
+					NetworkServer.findName()
+					NetworkServer.findTeam()
+					NetworkServer.addClient()
+				Method: sendMsg() calls : 
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.sendMsg()
+				Method: sendMsg() calls : 
+					ClientConnected.sendMsg()
+				Method: sendMsg() calls : 
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.getNameClient()
+					ArrayList.compareTo()
+					ArrayList.get()
+					ArrayList.sendMsg()
+				Method: kickPlayer() calls : 
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.getNameClient()
+					ArrayList.compareTo()
+					ArrayList.get()
+					ArrayList.setKeepRunning()
+					ArrayList.get()
+					NetworkServer.disconnectClient()
+				Method: disconnectClient() calls : 
+					ArrayList.remove()
+					Network.getGameState()
+					NetworkServer.updateRoomInfo()
+					Network.getGameState()
+					NetworkServer.kickClient()
+				Method: Fire() calls : 
+					NetworkServer.sendMsg()
+					NetworkServer.sendMsg()
+					NetworkServer.sendMsg()
+				Method: sendFire() calls : 
+					Network.getClient()
+					Network.getGame()
+					Network.getPlayerTurn()
+					Network.getClient()
+					Network.getGame()
+					Network.getPlayerTurn()
+					ArrayList.get()
+					ArrayList.getTeam()
+					Network.Fire()
+				Method: Fire() calls : 
+					Network.getClient()
+					Network.getGame()
+					Network.getPlayerTurn()
+					Network.getClient()
+					Network.getGame()
+					Network.getPlayerTurn()
+					Network.getClient()
+					Network.getGame()
+					Network.getRoom()
+					Room.values()
+					Network.GetTeam()
+					Network.GetPlayerList()
+					ClientConnected.GetName()
+					ClientConnected.getNameClient()
+					?.compareTo()
+					Network.Fire()
+					NetworkServer.sendMsg()
+				Method: sendShoot() calls : 
+					Network.getClient()
+					Network.getGame()
+					Network.getPlayerTurn()
+					Network.getClient()
+					Network.getGame()
+					Network.getPlayerTurn()
+					Network.getClient()
+					Network.getGame()
+					Network.getRoom()
+					Room.values()
+					Network.GetTeam()
+					Network.GetPlayerList()
+					NetworkMsg.GetName()
+					ArrayList.get()
+					ArrayList.getNameClient()
+					?.compareTo()
+					Network.getClient()
+					Network.getGame()
+					Network.getShootDone()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					NetworkServer.sendMsg()
+					Network.getClient()
+					Network.getGame()
+					Network.Shoot()
+				Method: Shoot() calls : 
+					Network.getClient()
+					Network.getGame()
+					Network.getPlayerTurn()
+					Network.getClient()
+					Network.getGame()
+					Network.getPlayerTurn()
+					Network.getClient()
+					Network.getGame()
+					Network.getRoom()
+					Room.values()
+					Network.GetTeam()
+					Network.GetPlayerList()
+					ClientConnected.GetName()
+					ClientConnected.getNameClient()
+					?.compareTo()
+					Network.getClient()
+					Network.getGame()
+					Network.getShootDone()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					NetworkServer.sendMsg()
+					Network.getClient()
+					Network.getGame()
+					Network.Shoot()
+				Method: kickClient() calls : 
+					NetworkServer.sendMsg()
+					Network.serverKill()
+				Method: getNetwork() calls no method(s)
+				Method: isHost() calls no method(s)
+		Coupling between classes:
+			Has called: ServerSocket.isClosed() 1 time(s)
+			Has called: ServerSocket.close() 1 time(s)
+			Has called: ArrayList.size() 13 time(s)
+			Has called: ArrayList.get() 25 time(s)
+			Has called: ArrayList.close() 1 time(s)
+			Has called: ArrayList.clear() 1 time(s)
+			Has called: Integer.toString() 1 time(s)
+			Has called: ArrayList.getNameClient() 9 time(s)
+			Has called: ArrayList.compareTo() 4 time(s)
+			Has called: NetworkServer.findName() 2 time(s)
+			Has called: ArrayList.getTeam() 6 time(s)
+			Has called: NetworkServer.freePlaceInTeam() 3 time(s)
+			Has called: Network.getClient() 21 time(s)
+			Has called: Network.updateRoom() 1 time(s)
+			Has called: String.length() 9 time(s)
+			Has called: NetworkMsg.intToBytes() 9 time(s)
+			Has called: System.arraycopy() 12 time(s)
+			Has called: String.getBytes() 11 time(s)
+			Has called: NetworkServer.sendMsg() 10 time(s)
+			Has called: ClientConnected.getNameClient() 3 time(s)
+			Has called: ClientConnected.getBytes() 1 time(s)
+			Has called: ClientConnected.sendMsg() 3 time(s)
+			Has called: ClientConnected.getTeam() 1 time(s)
+			Has called: Network.serverKill() 2 time(s)
+			Has called: ArrayList.add() 1 time(s)
+			Has called: ArrayList.start() 1 time(s)
+			Has called: NetworkServer.sendHisOwnInfo() 1 time(s)
+			Has called: NetworkServer.updateRoomInfo() 4 time(s)
+			Has called: NetworkServer.canRun() 1 time(s)
+			Has called: Network.launchGameServer() 1 time(s)
+			Has called: NetworkServer.nameAlreadyExist() 1 time(s)
+			Has called: Network.getYourInfo() 1 time(s)
+			Has called: Network.SetName() 1 time(s)
+			Has called: ArrayList.setNameClient() 1 time(s)
+			Has called: Network.setCurrentName() 1 time(s)
+			Has called: Network.setFlagChangeName() 1 time(s)
+			Has called: ArrayList.setTeam() 1 time(s)
+			Has called: Network.setTeam() 1 time(s)
+			Has called: ServerSocket.accept() 1 time(s)
+			Has called: NetworkServer.findTeam() 1 time(s)
+			Has called: NetworkServer.addClient() 1 time(s)
+			Has called: ArrayList.sendMsg() 2 time(s)
+			Has called: ArrayList.setKeepRunning() 1 time(s)
+			Has called: NetworkServer.disconnectClient() 1 time(s)
+			Has called: ArrayList.remove() 1 time(s)
+			Has called: Network.getGameState() 2 time(s)
+			Has called: NetworkServer.kickClient() 1 time(s)
+			Has called: Network.getGame() 15 time(s)
+			Has called: Network.getPlayerTurn() 8 time(s)
+			Has called: Network.Fire() 2 time(s)
+			Has called: Network.getRoom() 3 time(s)
+			Has called: Room.values() 3 time(s)
+			Has called: Network.GetTeam() 3 time(s)
+			Has called: Network.GetPlayerList() 3 time(s)
+			Has called: ClientConnected.GetName() 2 time(s)
+			Has called: ?.compareTo() 3 time(s)
+			Has called: NetworkMsg.GetName() 1 time(s)
+			Has called: Network.getShootDone() 2 time(s)
+			Has called: Network.Shoot() 2 time(s)
+
+	Class: Client
+		Graph of direct calls between methods
+				Method: Client() calls : 
+					Client.init()
+				Method: init() calls no method(s)
+				Method: createRoom() calls : 
+					Client.init()
+					Network.clearConnect()
+					Network.createServer()
+				Method: joinRoom() calls : 
+					Client.init()
+					Network.clearConnect()
+					Network.connectToServer()
+				Method: clearNetwork() calls : 
+					Network.clearConnect()
+				Method: quitRoom() calls : 
+					Client.clearNetwork()
+				Method: quitGame() calls : 
+					Client.clearNetwork()
+				Method: runGame() calls : 
+					Network.runGame()
+				Method: quitRoom() calls : 
+					Network.quitRoom()
+				Method: changeName() calls : 
+					Network.changeName()
+				Method: changeTeam() calls : 
+					Network.changeTeam()
+				Method: changeTeam() calls : 
+					Network.changeTeam()
+				Method: clickFire() calls : 
+					Network.sendFire()
+				Method: ClickShoot() calls : 
+					Network.sendShoot()
+				Method: launchGame() calls no method(s)
+				Method: launchGameServer() calls : 
+					Game.start()
+				Method: endGame() calls : 
+					Game.isAlive()
+					Game.endGame()
+				Method: Fire() calls : 
+					Game.Fire()
+				Method: Fire() calls : 
+					Network.Fire()
+				Method: sendEndGame() calls : 
+					Network.sendEndGame()
+					Client.clearNetwork()
+				Method: changeScoreTeam() calls : 
+					Network.changeScoreTeam()
+				Method: killTarget() calls : 
+					Network.killTarget()
+				Method: outTarget() calls : 
+					Network.outTarget()
+				Method: mvtTarget() calls : 
+					Network.mvtTarget()
+				Method: updateRoom() calls : 
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.SetName()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.SetName()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.SetName()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.SetName()
+				Method: changeStation() calls : 
+					Network.changeStation()
+				Method: changePlayerTurn() calls : 
+					Network.changePlayerTurn()
+				Method: getNetwork() calls no method(s)
+				Method: getRoom() calls no method(s)
+				Method: getGame() calls no method(s)
+				Method: getYourInfo() calls no method(s)
+				Method: getGameState() calls no method(s)
+				Method: setTeam() calls no method(s)
+				Method: playerShootReceive() calls : 
+					Game.playerShootReceive()
+				Method: MvtTargetReceive() calls : 
+					Game.MvtTargetReceive()
+				Method: KillTargetReceive() calls : 
+					Game.KillTargetReceive()
+				Method: OutTargetReceive() calls : 
+					Game.OutTargetReceive()
+				Method: ChangeScoreReceive() calls : 
+					Game.ChangeScoreReceive()
+				Method: PlayerTurnReceive() calls : 
+					Game.PlayerTurnReceive()
+				Method: EndGameReceive() calls : 
+					Game.EndGameReceive()
+					Client.clearNetwork()
+				Method: PosForShootReceive() calls : 
+					Game.PosForShootReceive()
+				Method: PullReceive() calls : 
+					Game.PullReceive()
+				Method: MarkReceive() calls : 
+					Game.MarkReceive()
+				Method: DoubleReceive() calls : 
+					Game.DoubleReceive()
+				Method: getError() calls no method(s)
+				Method: setError() calls no method(s)
+				Method: getCurrentName() calls no method(s)
+				Method: setCurrentName() calls no method(s)
+				Method: getFlagChangeName() calls no method(s)
+				Method: setFlagChangeName() calls no method(s)
+				Method: getFlagQuitRoom() calls no method(s)
+				Method: setFlagQuitRoom() calls no method(s)
+				Method: getFlagQuitGame() calls no method(s)
+				Method: setFlagQuitGame() calls no method(s)
+				Method: getFlagLaunchGame() calls no method(s)
+				Method: setFlagLaunchGame() calls no method(s)
+				Method: fireReceive() calls : 
+					Game.fireReceive()
+				Method: getScore() calls : 
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetName()
+					Player.GetName()
+					Game.compareTo()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetName()
+					Player.GetName()
+					Game.compareTo()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetName()
+					Player.GetName()
+					Game.compareTo()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetName()
+					Player.GetName()
+					Game.compareTo()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+				Method: getScoreTeam() calls : 
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetName()
+					Player.GetName()
+					Game.compareTo()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetName()
+					Player.GetName()
+					Game.compareTo()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetName()
+					Player.GetName()
+					Game.compareTo()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetName()
+					Player.GetName()
+					Game.compareTo()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+					Game.getRoom()
+					Game.GetTeam()
+					Game.GetPlayer()
+					Game.GetScore()
+				Method: findViewStation() calls : 
+					Player.GetName()
+					Game.isPlayerTurn()
+					Game.getStation()
+				Method: findStation() calls : 
+					Game.getStation()
+				Method: isHost() calls : 
+					Network.isHost()
+		Coupling between classes:
+			Has called: Client.init() 3 time(s)
+			Has called: Network.clearConnect() 3 time(s)
+			Has called: Network.createServer() 1 time(s)
+			Has called: Network.connectToServer() 1 time(s)
+			Has called: Client.clearNetwork() 4 time(s)
+			Has called: Network.runGame() 1 time(s)
+			Has called: Network.quitRoom() 1 time(s)
+			Has called: Network.changeName() 1 time(s)
+			Has called: Network.changeTeam() 2 time(s)
+			Has called: Network.sendFire() 1 time(s)
+			Has called: Network.sendShoot() 1 time(s)
+			Has called: Game.start() 1 time(s)
+			Has called: Game.isAlive() 1 time(s)
+			Has called: Game.endGame() 1 time(s)
+			Has called: Game.Fire() 1 time(s)
+			Has called: Network.Fire() 1 time(s)
+			Has called: Network.sendEndGame() 1 time(s)
+			Has called: Network.changeScoreTeam() 1 time(s)
+			Has called: Network.killTarget() 1 time(s)
+			Has called: Network.outTarget() 1 time(s)
+			Has called: Network.mvtTarget() 1 time(s)
+			Has called: Room.GetTeam() 4 time(s)
+			Has called: Room.GetPlayer() 4 time(s)
+			Has called: Room.SetName() 4 time(s)
+			Has called: Network.changeStation() 1 time(s)
+			Has called: Network.changePlayerTurn() 1 time(s)
+			Has called: Game.playerShootReceive() 1 time(s)
+			Has called: Game.MvtTargetReceive() 1 time(s)
+			Has called: Game.KillTargetReceive() 1 time(s)
+			Has called: Game.OutTargetReceive() 1 time(s)
+			Has called: Game.ChangeScoreReceive() 1 time(s)
+			Has called: Game.PlayerTurnReceive() 1 time(s)
+			Has called: Game.EndGameReceive() 1 time(s)
+			Has called: Game.PosForShootReceive() 1 time(s)
+			Has called: Game.PullReceive() 1 time(s)
+			Has called: Game.MarkReceive() 1 time(s)
+			Has called: Game.DoubleReceive() 1 time(s)
+			Has called: Game.fireReceive() 1 time(s)
+			Has called: Game.getRoom() 20 time(s)
+			Has called: Game.GetTeam() 20 time(s)
+			Has called: Game.GetPlayer() 20 time(s)
+			Has called: Game.GetName() 8 time(s)
+			Has called: Player.GetName() 9 time(s)
+			Has called: Game.compareTo() 8 time(s)
+			Has called: Game.GetScore() 12 time(s)
+			Has called: Game.isPlayerTurn() 1 time(s)
+			Has called: Game.getStation() 2 time(s)
+			Has called: Network.isHost() 1 time(s)
+
+	Class: Team
+		Graph of direct calls between methods
+				Method: Team() calls no method(s)
+				Method: AddScore() calls : 
+					PlayerType.ordinal()
+					PlayerType.SetScore()
+				Method: GetScore() calls : 
+					?.GetScore()
+					?.GetScore()
+				Method: GetPlayerScore() calls : 
+					PlayerType.ordinal()
+					PlayerType.GetScore()
+				Method: GetPlayer() calls : 
+					PlayerType.ordinal()
+				Method: GetPlayerList() calls no method(s)
+				Method: AddPlayer() calls : 
+					String.GetName()
+					?.SetName()
+					?.SetName()
+				Method: RemovePlayer() calls : 
+					String.GetName()
+					?.SetName()
+					?.SetScore()
+		Coupling between classes:
+			Has called: PlayerType.ordinal() 3 time(s)
+			Has called: PlayerType.SetScore() 1 time(s)
+			Has called: ?.GetScore() 2 time(s)
+			Has called: PlayerType.GetScore() 1 time(s)
+			Has called: String.GetName() 2 time(s)
+			Has called: ?.SetName() 3 time(s)
+			Has called: ?.SetScore() 1 time(s)
+
+	Class: Pair
+		Graph of direct calls between methods
+				Method: Pair() calls no method(s)
+		Coupling between classes:
+			No coupling between classes for this class
+
+	Class: MenuPlay
+		Graph of direct calls between methods
+				Method: MenuPlay() calls no method(s)
+				Method: getID() calls no method(s)
+				Method: reset() calls : 
+					AngryPidge.setFlagQuitRoom()
+				Method: componentActivated() calls : 
+					TextField.getText()
+					TextField.getText()
+					Integer.decode()
+					AngryPidge.joinRoom()
+					StateBasedGame.enterState()
+					TextField.getText()
+					Integer.decode()
+					AngryPidge.createRoom()
+					StateBasedGame.enterState()
+					StateBasedGame.enterState()
+				Method: init() calls : 
+					GameContainer.getDefaultFont()
+					GameContainer.getDefaultFont()
+					GameContainer.getDefaultFont()
+					TextField.setText()
+					TextField.setText()
+					TextField.setText()
+					TextField.setMaxLength()
+					TextField.setMaxLength()
+					TextField.setMaxLength()
+					TextField.setBorderColor()
+					TextField.setBorderColor()
+					TextField.setBorderColor()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+				Method: update() calls : 
+					GameContainer.getInput()
+					Input.isKeyPressed()
+					StateBasedGame.enterState()
+					TextField.hasFocus()
+					TextField.hasFocus()
+					TextField.hasFocus()
+				Method: render() calls : 
+					Image.draw()
+					Image.draw()
+					GameContainer.getDefaultFont()
+					AngryPidge.getError()
+					GameContainer.drawString()
+					Image.draw()
+					GameContainer.getDefaultFont()
+					AngryPidge.getError()
+					GameContainer.drawString()
+					Graphics.setColor()
+					TextField.render()
+					TextField.render()
+					TextField.render()
+					MouseOverArea.render()
+					MouseOverArea.render()
+					MouseOverArea.render()
+				Method: setIsJoinWarning() calls no method(s)
+		Coupling between classes:
+			Has called: AngryPidge.setFlagQuitRoom() 1 time(s)
+			Has called: TextField.getText() 3 time(s)
+			Has called: Integer.decode() 2 time(s)
+			Has called: AngryPidge.joinRoom() 1 time(s)
+			Has called: StateBasedGame.enterState() 4 time(s)
+			Has called: AngryPidge.createRoom() 1 time(s)
+			Has called: GameContainer.getDefaultFont() 5 time(s)
+			Has called: TextField.setText() 3 time(s)
+			Has called: TextField.setMaxLength() 3 time(s)
+			Has called: TextField.setBorderColor() 3 time(s)
+			Has called: MouseOverArea.setNormalColor() 3 time(s)
+			Has called: MouseOverArea.setMouseOverColor() 3 time(s)
+			Has called: GameContainer.getInput() 1 time(s)
+			Has called: Input.isKeyPressed() 1 time(s)
+			Has called: TextField.hasFocus() 3 time(s)
+			Has called: Image.draw() 3 time(s)
+			Has called: AngryPidge.getError() 2 time(s)
+			Has called: GameContainer.drawString() 2 time(s)
+			Has called: Graphics.setColor() 1 time(s)
+			Has called: TextField.render() 3 time(s)
+			Has called: MouseOverArea.render() 3 time(s)
+
+	Class: Network
+		Graph of direct calls between methods
+				Method: Network() calls no method(s)
+				Method: createServer() calls : 
+					ANetworkModel.connect()
+					Client.getYourInfo()
+					Client.GetName()
+					Client.getYourInfo()
+					Client.SetName()
+					ANetworkModel.start()
+					Client.getYourInfo()
+					Client.GetName()
+					ANetworkModel.addClient()
+					Client.setError()
+				Method: quitRoom() calls : 
+					ANetworkModel.kickClient()
+				Method: connectToServer() calls : 
+					ANetworkModel.connect()
+					ANetworkModel.start()
+					Client.setError()
+				Method: clearConnect() calls : 
+					ANetworkModel.close()
+				Method: clientDisconnect() calls : 
+					Client.getGameState()
+					Network.clearConnect()
+					Client.quitRoom()
+					Network.clearConnect()
+					Client.quitGame()
+				Method: serverKill() calls : 
+					Client.getGameState()
+					ANetworkModel.sendMsg()
+					Network.clearConnect()
+					Client.quitRoom()
+					ANetworkModel.sendMsg()
+					Network.clearConnect()
+					Client.quitGame()
+				Method: sendFire() calls : 
+					ANetworkModel.sendFire()
+				Method: Fire() calls : 
+					Client.Fire()
+				Method: Fire() calls : 
+					ANetworkModel.Fire()
+				Method: runGame() calls : 
+					ANetworkModel.runGame()
+				Method: changeName() calls : 
+					ANetworkModel.changeName()
+				Method: changeTeam() calls : 
+					ANetworkModel.changeTeam()
+				Method: getGameState() calls : 
+					Client.getGameState()
+				Method: getClient() calls no method(s)
+				Method: changeStation() calls : 
+					NetworkMsg.intToBytes()
+					ANetworkModel.sendMsg()
+				Method: changePlayerTurn() calls : 
+					String.getBytes()
+					ANetworkModel.sendMsg()
+				Method: sendEndGame() calls : 
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					ANetworkModel.sendMsg()
+				Method: changeScoreTeam() calls : 
+					String.getBytes()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					String.getBytes()
+					String.getBytes()
+					System.arraycopy()
+					ANetworkModel.sendMsg()
+				Method: killTarget() calls : 
+					NetworkMsg.intToBytes()
+					ANetworkModel.sendMsg()
+				Method: outTarget() calls : 
+					NetworkMsg.intToBytes()
+					ANetworkModel.sendMsg()
+				Method: mvtTarget() calls : 
+					Double.toString()
+					Double.getBytes()
+					Double.toString()
+					Double.getBytes()
+					Double.toString()
+					Double.getBytes()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					System.arraycopy()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					System.arraycopy()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					System.arraycopy()
+					ANetworkModel.sendMsg()
+				Method: sendShoot() calls : 
+					ANetworkModel.sendShoot()
+				Method: isHost() calls : 
+					ANetworkModel.isHost()
+		Coupling between classes:
+			Has called: ANetworkModel.connect() 2 time(s)
+			Has called: Client.getYourInfo() 3 time(s)
+			Has called: Client.GetName() 2 time(s)
+			Has called: Client.SetName() 1 time(s)
+			Has called: ANetworkModel.start() 2 time(s)
+			Has called: ANetworkModel.addClient() 1 time(s)
+			Has called: Client.setError() 2 time(s)
+			Has called: ANetworkModel.kickClient() 1 time(s)
+			Has called: ANetworkModel.close() 1 time(s)
+			Has called: Client.getGameState() 3 time(s)
+			Has called: Network.clearConnect() 4 time(s)
+			Has called: Client.quitRoom() 2 time(s)
+			Has called: Client.quitGame() 2 time(s)
+			Has called: ANetworkModel.sendMsg() 9 time(s)
+			Has called: ANetworkModel.sendFire() 1 time(s)
+			Has called: Client.Fire() 1 time(s)
+			Has called: ANetworkModel.Fire() 1 time(s)
+			Has called: ANetworkModel.runGame() 1 time(s)
+			Has called: ANetworkModel.changeName() 1 time(s)
+			Has called: ANetworkModel.changeTeam() 1 time(s)
+			Has called: NetworkMsg.intToBytes() 11 time(s)
+			Has called: String.getBytes() 4 time(s)
+			Has called: System.arraycopy() 12 time(s)
+			Has called: Double.toString() 3 time(s)
+			Has called: Double.getBytes() 3 time(s)
+			Has called: ANetworkModel.sendShoot() 1 time(s)
+			Has called: ANetworkModel.isHost() 1 time(s)
+
+	Class: ShootDone
+		Graph of direct calls between methods
+				Method: ShootDone() calls no method(s)
+				Method: addTarget() calls : 
+					List.add()
+				Method: lessTemp() calls no method(s)
+				Method: getTemp() calls no method(s)
+				Method: getX() calls no method(s)
+				Method: getY() calls no method(s)
+				Method: getTouch() calls no method(s)
+				Method: getTarget() calls no method(s)
+		Coupling between classes:
+			Has called: List.add() 1 time(s)
+
+	Class: MenuOptions
+		Graph of direct calls between methods
+				Method: MenuOptions() calls no method(s)
+				Method: getID() calls no method(s)
+				Method: componentActivated() calls : 
+					ArrayList.get()
+					MouseOverArea.setNormalImage()
+					ArrayList.get()
+					MouseOverArea.setMouseOverImage()
+					ArrayList.get()
+					MouseOverArea.setMouseDownImage()
+					SoundManager.SetSoundsVolume()
+					ArrayList.get()
+					MouseOverArea.setNormalImage()
+					ArrayList.get()
+					MouseOverArea.setMouseOverImage()
+					ArrayList.get()
+					MouseOverArea.setMouseDownImage()
+					SoundManager.SetMusicsVolume()
+					StateBasedGame.enterState()
+				Method: init() calls : 
+					ArrayList.add()
+					ArrayList.add()
+					ArrayList.add()
+					ArrayList.add()
+					ArrayList.get()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					ArrayList.get()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+				Method: update() calls : 
+					GameContainer.getInput()
+					Input.isKeyPressed()
+					StateBasedGame.enterState()
+				Method: render() calls : 
+					Image.draw()
+					MouseOverArea.render()
+					MouseOverArea.render()
+					MouseOverArea.render()
+		Coupling between classes:
+			Has called: ArrayList.get() 8 time(s)
+			Has called: MouseOverArea.setNormalImage() 2 time(s)
+			Has called: MouseOverArea.setMouseOverImage() 2 time(s)
+			Has called: MouseOverArea.setMouseDownImage() 2 time(s)
+			Has called: SoundManager.SetSoundsVolume() 1 time(s)
+			Has called: SoundManager.SetMusicsVolume() 1 time(s)
+			Has called: StateBasedGame.enterState() 2 time(s)
+			Has called: ArrayList.add() 4 time(s)
+			Has called: MouseOverArea.setNormalColor() 3 time(s)
+			Has called: MouseOverArea.setMouseOverColor() 3 time(s)
+			Has called: GameContainer.getInput() 1 time(s)
+			Has called: Input.isKeyPressed() 1 time(s)
+			Has called: Image.draw() 1 time(s)
+			Has called: MouseOverArea.render() 3 time(s)
+
+	Class: MenuCredits
+		Graph of direct calls between methods
+				Method: MenuCredits() calls no method(s)
+				Method: getID() calls no method(s)
+				Method: init() calls : 
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+				Method: update() calls : 
+					GameContainer.getInput()
+					Input.isKeyPressed()
+					StateBasedGame.enterState()
+				Method: render() calls : 
+					Image.draw()
+					MouseOverArea.render()
+				Method: componentActivated() calls : 
+					_stateBasedGame.enterState()
+		Coupling between classes:
+			Has called: MouseOverArea.setNormalColor() 1 time(s)
+			Has called: MouseOverArea.setMouseOverColor() 1 time(s)
+			Has called: GameContainer.getInput() 1 time(s)
+			Has called: Input.isKeyPressed() 1 time(s)
+			Has called: StateBasedGame.enterState() 1 time(s)
+			Has called: Image.draw() 1 time(s)
+			Has called: MouseOverArea.render() 1 time(s)
+			Has called: _stateBasedGame.enterState() 1 time(s)
+
+	Class: GameRun
+		Graph of direct calls between methods
+				Method: GameRun() calls no method(s)
+				Method: init() calls : 
+					Image.getWidth()
+					Game.setWidthTarget()
+					Image.getHeight()
+					Game.setHeightTarget()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					SoundManager.LoadSound()
+					SoundManager.LoadSound()
+					SoundManager.LoadSound()
+				Method: getID() calls no method(s)
+				Method: componentActivated() calls : 
+					AngryPidge.clickFire()
+					SoundManager.PlaySound()
+				Method: update() calls : 
+					GameContainer.getInput()
+					Input.isKeyPressed()
+					StateBasedGame.enterState()
+					Input.isMousePressed()
+					AngryPidge.getGame()
+					AngryPidge.getFireDone()
+					Input.getMouseY()
+					Input.getMouseX()
+					Input.getMouseY()
+					AngryPidge.ClickShoot()
+					AngryPidge.GetEndGame()
+					StateBasedGame.enterState()
+					GameRun.updateWithNetwork()
+				Method: updateWithNetwork() calls : 
+					AngryPidge.GetEndGame()
+					StateBasedGame.enterState()
+					AngryPidge.getShootEffect()
+					AngryPidge.setShootEffect()
+					_soundManager.PlaySound()
+					AngryPidge.getFireEffect()
+					AngryPidge.setFireEffect()
+					_soundManager.PlaySound()
+					AngryPidge.getFlagQuitGame()
+					stateBasedGame.enterState()
+					AngryPidge.setFlagQuitGame()
+				Method: render() calls : 
+					GameRun.updateWithNetwork()
+					GameRun.drawBases()
+					GameRun.drawScore()
+				Method: drawBases() calls : 
+					AngryPidge.findViewStation()
+					GameRun.drawBaseOne()
+					GameRun.drawBaseTwo()
+					GameRun.drawBaseThree()
+					GameRun.drawBaseFour()
+					GameRun.drawBaseFive()
+					GameRun.drawBaseSix()
+					GameRun.drawBaseSeven()
+					GameRun.drawBaseHeight()
+					GameRun.drawGlobal()
+				Method: drawExtraForTurn() calls : 
+					AngryPidge.getGame()
+					AngryPidge.getFireDone()
+					Fire.render()
+					AngryPidge.getGame()
+					AngryPidge.getNbBullet()
+					_bullet.draw()
+					_bullet.draw()
+					Graphics.setColor()
+					Graphics.scale()
+					Integer.toString()
+					Graphics.drawString()
+					Graphics.scale()
+				Method: drawPidge() calls : 
+					_pidgePullImg.draw()
+					_pidgeMarkImg.draw()
+				Method: drawBaseOne() calls : 
+					_backgroundImgBaseOne.draw()
+					AngryPidge.getGame()
+					AngryPidge.getTargets()
+					List.size()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getY()
+					List.get()
+					List.getZ()
+					List.get()
+					List.is_fromPull()
+					GameRun.drawPidge()
+					GameRun.drawExtraForTurn()
+				Method: drawBaseTwo() calls : 
+					_backgroundImgBaseTwo.draw()
+					AngryPidge.getGame()
+					AngryPidge.getTargets()
+					List.size()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getY()
+					List.get()
+					List.getZ()
+					List.get()
+					List.is_fromPull()
+					GameRun.drawPidge()
+					GameRun.drawExtraForTurn()
+				Method: drawBaseThree() calls : 
+					_backgroundImgBaseThree.draw()
+					AngryPidge.getGame()
+					AngryPidge.getTargets()
+					List.size()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getY()
+					List.get()
+					List.getZ()
+					List.get()
+					List.is_fromPull()
+					GameRun.drawPidge()
+					GameRun.drawExtraForTurn()
+				Method: drawBaseFour() calls : 
+					_backgroundImgBaseFour.draw()
+					AngryPidge.getGame()
+					AngryPidge.getTargets()
+					List.size()
+					List.get()
+					List.getX()
+					List.get()
+					List.getY()
+					List.get()
+					List.getZ()
+					List.get()
+					List.is_fromPull()
+					GameRun.drawPidge()
+					GameRun.drawExtraForTurn()
+				Method: drawBaseFive() calls : 
+					_backgroundImgBaseFive.draw()
+					AngryPidge.getGame()
+					AngryPidge.getTargets()
+					List.size()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getY()
+					List.get()
+					List.getZ()
+					List.get()
+					List.is_fromPull()
+					GameRun.drawPidge()
+					GameRun.drawExtraForTurn()
+				Method: drawBaseSix() calls : 
+					_backgroundImgBaseSix.draw()
+					AngryPidge.getGame()
+					AngryPidge.getTargets()
+					List.size()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getY()
+					List.get()
+					List.getZ()
+					List.get()
+					List.is_fromPull()
+					GameRun.drawPidge()
+					GameRun.drawExtraForTurn()
+				Method: drawBaseSeven() calls : 
+					_backgroundImgBaseSeven.draw()
+					AngryPidge.getGame()
+					AngryPidge.getTargets()
+					List.size()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getY()
+					List.get()
+					List.getZ()
+					List.get()
+					List.is_fromPull()
+					GameRun.drawPidge()
+					GameRun.drawExtraForTurn()
+				Method: drawBaseHeight() calls : 
+					_backgroundImgBaseHeight.draw()
+					AngryPidge.getGame()
+					AngryPidge.getTargets()
+					List.size()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getX()
+					List.get()
+					List.getY()
+					List.get()
+					List.getZ()
+					List.get()
+					List.is_fromPull()
+					GameRun.drawPidge()
+					GameRun.drawExtraForTurn()
+				Method: drawGlobal() calls : 
+					_backgroundImgGlobal.draw()
+					AngryPidge.getGame()
+					AngryPidge.getTargets()
+					List.size()
+					List.get()
+					List.getX()
+					List.get()
+					List.getY()
+					List.get()
+					List.is_fromPull()
+					_pidgePullImg.draw()
+					_pidgeMarkImg.draw()
+					GameRun.drawHunterAndShoot()
+					Graphics.setColor()
+					Graphics.scale()
+					AngryPidge.getGame()
+					AngryPidge.getCurrentPlayerName()
+					Graphics.drawString()
+					Graphics.scale()
+				Method: drawDeadPidge() calls : 
+					List.size()
+					List.get()
+					List.getX()
+					_deadPidgePull.getWidth()
+					List.get()
+					List.getY()
+					_deadPidgePull.getHeight()
+					List.get()
+					List.is_fromPull()
+					_deadPidgePull.draw()
+					_deadPidgeMark.draw()
+				Method: drawShoot() calls : 
+					AngryPidge.getGame()
+					AngryPidge.getListShootDone()
+					AngryPidge.size()
+					AngryPidge.getGame()
+					AngryPidge.getListShootDone()
+					AngryPidge.get()
+					ShootDone.lessTemp()
+					ShootDone.getTemp()
+					ShootDone.getTouch()
+					ShootDone.getX()
+					ShootDone.getY()
+					ShootDone.getTarget()
+					ShootDone.get()
+					ShootDone.getX()
+					ShootDone.getTarget()
+					ShootDone.get()
+					ShootDone.getY()
+					ShootDone.getTarget()
+					GameRun.drawDeadPidge()
+					Graphics.setColor()
+					Graphics.draw()
+					AngryPidge.getGame()
+					AngryPidge.getListShootDone()
+					AngryPidge.remove()
+				Method: drawHunterAndShoot() calls : 
+					AngryPidge.findStation()
+					_hunter.draw()
+					_hunter.getWidth()
+					GameRun.drawShoot()
+					_hunter.draw()
+					_hunter.getWidth()
+					GameRun.drawShoot()
+					_hunter.draw()
+					_hunter.getWidth()
+					GameRun.drawShoot()
+					_hunter.draw()
+					_hunter.getWidth()
+					GameRun.drawShoot()
+					_hunter.draw()
+					_hunter.getWidth()
+					GameRun.drawShoot()
+					_hunter.draw()
+					_hunter.getWidth()
+					GameRun.drawShoot()
+					_hunter.draw()
+					_hunter.getWidth()
+					GameRun.drawShoot()
+					_hunter.draw()
+					_hunter.getWidth()
+					GameRun.drawShoot()
+				Method: drawScore() calls : 
+					Graphics.setColor()
+					Graphics.scale()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetScore()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetScore()
+					Integer.toString()
+					Graphics.drawString()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetName()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetScore()
+					Integer.toString()
+					Graphics.drawString()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetName()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetScore()
+					Integer.toString()
+					Graphics.drawString()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetScore()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetScore()
+					Integer.toString()
+					Graphics.drawString()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetName()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetScore()
+					Integer.toString()
+					Graphics.drawString()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetName()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetScore()
+					Integer.toString()
+					Graphics.drawString()
+				Method: setCameraState() calls no method(s)
+		Coupling between classes:
+			Has called: Image.getWidth() 1 time(s)
+			Has called: Game.setWidthTarget() 1 time(s)
+			Has called: Image.getHeight() 1 time(s)
+			Has called: Game.setHeightTarget() 1 time(s)
+			Has called: MouseOverArea.setNormalColor() 1 time(s)
+			Has called: MouseOverArea.setMouseOverColor() 1 time(s)
+			Has called: SoundManager.LoadSound() 3 time(s)
+			Has called: AngryPidge.clickFire() 1 time(s)
+			Has called: SoundManager.PlaySound() 1 time(s)
+			Has called: GameContainer.getInput() 1 time(s)
+			Has called: Input.isKeyPressed() 1 time(s)
+			Has called: StateBasedGame.enterState() 3 time(s)
+			Has called: Input.isMousePressed() 1 time(s)
+			Has called: AngryPidge.getGame() 16 time(s)
+			Has called: AngryPidge.getFireDone() 2 time(s)
+			Has called: Input.getMouseY() 2 time(s)
+			Has called: Input.getMouseX() 1 time(s)
+			Has called: AngryPidge.ClickShoot() 1 time(s)
+			Has called: AngryPidge.GetEndGame() 2 time(s)
+			Has called: GameRun.updateWithNetwork() 2 time(s)
+			Has called: AngryPidge.getShootEffect() 1 time(s)
+			Has called: AngryPidge.setShootEffect() 1 time(s)
+			Has called: _soundManager.PlaySound() 2 time(s)
+			Has called: AngryPidge.getFireEffect() 1 time(s)
+			Has called: AngryPidge.setFireEffect() 1 time(s)
+			Has called: AngryPidge.getFlagQuitGame() 1 time(s)
+			Has called: stateBasedGame.enterState() 1 time(s)
+			Has called: AngryPidge.setFlagQuitGame() 1 time(s)
+			Has called: GameRun.drawBases() 1 time(s)
+			Has called: GameRun.drawScore() 1 time(s)
+			Has called: AngryPidge.findViewStation() 1 time(s)
+			Has called: GameRun.drawBaseOne() 1 time(s)
+			Has called: GameRun.drawBaseTwo() 1 time(s)
+			Has called: GameRun.drawBaseThree() 1 time(s)
+			Has called: GameRun.drawBaseFour() 1 time(s)
+			Has called: GameRun.drawBaseFive() 1 time(s)
+			Has called: GameRun.drawBaseSix() 1 time(s)
+			Has called: GameRun.drawBaseSeven() 1 time(s)
+			Has called: GameRun.drawBaseHeight() 1 time(s)
+			Has called: GameRun.drawGlobal() 1 time(s)
+			Has called: Fire.render() 1 time(s)
+			Has called: AngryPidge.getNbBullet() 1 time(s)
+			Has called: _bullet.draw() 2 time(s)
+			Has called: Graphics.setColor() 4 time(s)
+			Has called: Graphics.scale() 5 time(s)
+			Has called: Integer.toString() 7 time(s)
+			Has called: Graphics.drawString() 8 time(s)
+			Has called: _pidgePullImg.draw() 2 time(s)
+			Has called: _pidgeMarkImg.draw() 2 time(s)
+			Has called: _backgroundImgBaseOne.draw() 1 time(s)
+			Has called: AngryPidge.getTargets() 9 time(s)
+			Has called: List.size() 10 time(s)
+			Has called: List.get() 52 time(s)
+			Has called: List.getX() 24 time(s)
+			Has called: List.getY() 10 time(s)
+			Has called: List.getZ() 8 time(s)
+			Has called: List.is_fromPull() 10 time(s)
+			Has called: GameRun.drawPidge() 8 time(s)
+			Has called: GameRun.drawExtraForTurn() 8 time(s)
+			Has called: _backgroundImgBaseTwo.draw() 1 time(s)
+			Has called: _backgroundImgBaseThree.draw() 1 time(s)
+			Has called: _backgroundImgBaseFour.draw() 1 time(s)
+			Has called: _backgroundImgBaseFive.draw() 1 time(s)
+			Has called: _backgroundImgBaseSix.draw() 1 time(s)
+			Has called: _backgroundImgBaseSeven.draw() 1 time(s)
+			Has called: _backgroundImgBaseHeight.draw() 1 time(s)
+			Has called: _backgroundImgGlobal.draw() 1 time(s)
+			Has called: GameRun.drawHunterAndShoot() 1 time(s)
+			Has called: AngryPidge.getCurrentPlayerName() 1 time(s)
+			Has called: _deadPidgePull.getWidth() 1 time(s)
+			Has called: _deadPidgePull.getHeight() 1 time(s)
+			Has called: _deadPidgePull.draw() 1 time(s)
+			Has called: _deadPidgeMark.draw() 1 time(s)
+			Has called: AngryPidge.getListShootDone() 3 time(s)
+			Has called: AngryPidge.size() 1 time(s)
+			Has called: AngryPidge.get() 1 time(s)
+			Has called: ShootDone.lessTemp() 1 time(s)
+			Has called: ShootDone.getTemp() 1 time(s)
+			Has called: ShootDone.getTouch() 1 time(s)
+			Has called: ShootDone.getX() 2 time(s)
+			Has called: ShootDone.getY() 2 time(s)
+			Has called: ShootDone.getTarget() 3 time(s)
+			Has called: ShootDone.get() 2 time(s)
+			Has called: GameRun.drawDeadPidge() 1 time(s)
+			Has called: Graphics.draw() 1 time(s)
+			Has called: AngryPidge.remove() 1 time(s)
+			Has called: AngryPidge.findStation() 1 time(s)
+			Has called: _hunter.draw() 8 time(s)
+			Has called: _hunter.getWidth() 8 time(s)
+			Has called: GameRun.drawShoot() 8 time(s)
+			Has called: AngryPidge.getRoom() 12 time(s)
+			Has called: AngryPidge.GetTeam() 12 time(s)
+			Has called: AngryPidge.GetPlayer() 12 time(s)
+			Has called: AngryPidge.GetScore() 8 time(s)
+			Has called: AngryPidge.GetName() 4 time(s)
+
+	Class: GameRoom
+		Graph of direct calls between methods
+				Method: GameRoom() calls no method(s)
+				Method: getID() calls no method(s)
+				Method: componentActivated() calls : 
+					AngryPidge.quitRoom()
+					AngryPidge.clearNetwork()
+					StateBasedGame.enterState()
+					AngryPidge.changeTeam()
+					AngryPidge.isHost()
+					AngryPidge.runGame()
+				Method: init() calls : 
+					GameContainer.getDefaultFont()
+					TextField.setBorderColor()
+					AngryPidge.getCurrentName()
+					TextField.setText()
+					TextField.setMaxLength()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+				Method: update() calls : 
+					GameContainer.getInput()
+					Input.isKeyPressed()
+					StateBasedGame.enterState()
+					TextField.hasFocus()
+					TextField.getText()
+					TextField.isEmpty()
+					AngryPidge.getCurrentName()
+					TextField.getText()
+					TextField.getText()
+					AngryPidge.changeName()
+				Method: updateWithNetwork() calls : 
+					AngryPidge.getFlagChangeName()
+					AngryPidge.getCurrentName()
+					TextField.setText()
+					AngryPidge.setFlagChangeName()
+					AngryPidge.getFlagQuitRoom()
+					MenuPlay.setIsJoinWarning()
+					StateBasedGame.enterState()
+					AngryPidge.setFlagQuitRoom()
+					AngryPidge.getFlagLaunchGame()
+					AngryPidge.setFlagLaunchGame()
+					StateBasedGame.enterState()
+				Method: render() calls : 
+					GameRoom.updateWithNetwork()
+					Image.draw()
+					MouseOverArea.render()
+					AngryPidge.isHost()
+					MouseOverArea.render()
+					MouseOverArea.render()
+					TextField.render()
+					GameContainer.getDefaultFont()
+					GameContainer.drawString()
+					GameContainer.getDefaultFont()
+					GameContainer.drawString()
+					GameContainer.getDefaultFont()
+					GameContainer.drawString()
+					GameContainer.getDefaultFont()
+					GameContainer.drawString()
+					GameContainer.getDefaultFont()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetName()
+					GameContainer.drawString()
+					GameContainer.getDefaultFont()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetName()
+					GameContainer.drawString()
+					GameContainer.getDefaultFont()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetName()
+					GameContainer.drawString()
+					GameContainer.getDefaultFont()
+					AngryPidge.getRoom()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetName()
+					GameContainer.drawString()
+		Coupling between classes:
+			Has called: AngryPidge.quitRoom() 1 time(s)
+			Has called: AngryPidge.clearNetwork() 1 time(s)
+			Has called: StateBasedGame.enterState() 4 time(s)
+			Has called: AngryPidge.changeTeam() 1 time(s)
+			Has called: AngryPidge.isHost() 2 time(s)
+			Has called: AngryPidge.runGame() 1 time(s)
+			Has called: GameContainer.getDefaultFont() 9 time(s)
+			Has called: TextField.setBorderColor() 1 time(s)
+			Has called: AngryPidge.getCurrentName() 3 time(s)
+			Has called: TextField.setText() 2 time(s)
+			Has called: TextField.setMaxLength() 1 time(s)
+			Has called: MouseOverArea.setNormalColor() 3 time(s)
+			Has called: MouseOverArea.setMouseOverColor() 3 time(s)
+			Has called: GameContainer.getInput() 1 time(s)
+			Has called: Input.isKeyPressed() 1 time(s)
+			Has called: TextField.hasFocus() 1 time(s)
+			Has called: TextField.getText() 3 time(s)
+			Has called: TextField.isEmpty() 1 time(s)
+			Has called: AngryPidge.changeName() 1 time(s)
+			Has called: AngryPidge.getFlagChangeName() 1 time(s)
+			Has called: AngryPidge.setFlagChangeName() 1 time(s)
+			Has called: AngryPidge.getFlagQuitRoom() 1 time(s)
+			Has called: MenuPlay.setIsJoinWarning() 1 time(s)
+			Has called: AngryPidge.setFlagQuitRoom() 1 time(s)
+			Has called: AngryPidge.getFlagLaunchGame() 1 time(s)
+			Has called: AngryPidge.setFlagLaunchGame() 1 time(s)
+			Has called: GameRoom.updateWithNetwork() 1 time(s)
+			Has called: Image.draw() 1 time(s)
+			Has called: MouseOverArea.render() 3 time(s)
+			Has called: TextField.render() 1 time(s)
+			Has called: GameContainer.drawString() 8 time(s)
+			Has called: AngryPidge.getRoom() 4 time(s)
+			Has called: AngryPidge.GetTeam() 4 time(s)
+			Has called: AngryPidge.GetPlayer() 4 time(s)
+			Has called: AngryPidge.GetName() 4 time(s)
+
+	Class: Player
+		Graph of direct calls between methods
+				Method: Player() calls no method(s)
+				Method: GetName() calls no method(s)
+				Method: SetName() calls no method(s)
+				Method: GetScore() calls no method(s)
+				Method: SetScore() calls no method(s)
+				Method: SetTeamNumber() calls no method(s)
+				Method: GetTeamNumber() calls no method(s)
+				Method: SetPlayerType() calls no method(s)
+				Method: GetPlayerType() calls no method(s)
+		Coupling between classes:
+			No coupling between classes for this class
+
+	Class: Game
+		Graph of direct calls between methods
+				Method: Game() calls : 
+					Game.initTargetData()
+				Method: initTargetData() calls : 
+					List.add()
+					List.size()
+					Math.random()
+					List.get()
+					LinkedList.add()
+					List.remove()
+					Integer.add()
+					List.remove()
+					Integer.add()
+					List.remove()
+					Integer.size()
+					Math.random()
+					?.size()
+					?.get()
+					?.add()
+				Method: nextPlayer() calls : 
+					Date.getTime()
+					List.clear()
+					List.clear()
+					Client.changeStation()
+					Room.values()
+					Room.GetTeam()
+					Room.GetPlayerList()
+					Date.GetName()
+					Client.changePlayerTurn()
+				Method: Shoot() calls : 
+					ReentrantLock.lock()
+					List.add()
+					List.size()
+					List.get()
+					List.getX()
+					List.get()
+					List.getY()
+					List.get()
+					List.getZ()
+					Client.killTarget()
+					List.size()
+					List.get()
+					List.get()
+					List.addTarget()
+					List.get()
+					List.remove()
+					Room.values()
+					Room.GetTeam()
+					Room.GetPlayerList()
+					Player.GetScore()
+					Player.SetScore()
+					Player.GetScore()
+					Room.values()
+					Room.GetTeam()
+					Room.GetPlayerList()
+					Player.GetName()
+					Client.changeScoreTeam()
+					List.size()
+					Date.getTime()
+					ReentrantLock.unlock()
+				Method: Fire() calls : 
+					Game.createTarget()
+				Method: createTarget() calls : 
+					List.clear()
+					Date.get()
+					List.add()
+					Client.Fire()
+					List.add()
+					Client.Fire()
+					List.add()
+					List.add()
+					Client.Fire()
+				Method: manageTarget() calls : 
+					Date.getTime()
+					Date.getTime()
+					ReentrantLock.lock()
+					List.size()
+					List.get()
+					Target.updatePosition()
+					Target.getX()
+					Target.getY()
+					Target.getX()
+					Target.getY()
+					List.remove()
+					Client.outTarget()
+					Target.getX()
+					Target.getY()
+					Target.getZ()
+					Client.mvtTarget()
+					Target.getX()
+					Target.getY()
+					Target.getZ()
+					Client.mvtTarget()
+					List.size()
+					Date.getTime()
+					ReentrantLock.unlock()
+				Method: waiting() calls : 
+					Date.getTime()
+					Game.Fire()
+					Date.getTime()
+				Method: getCurrentPlayerName() calls : 
+					Room.values()
+					Room.GetTeam()
+					Room.GetPlayerList()
+					String.GetName()
+				Method: getPlayerTurn() calls no method(s)
+				Method: get_state() calls no method(s)
+				Method: getStation() calls no method(s)
+				Method: getTargets() calls no method(s)
+				Method: run() calls : 
+					Client.changeStation()
+					Room.values()
+					Room.GetTeam()
+					Room.GetPlayerList()
+					List.GetName()
+					Client.changePlayerTurn()
+					Game.manageTarget()
+					Game.nextPlayer()
+					Game.waiting()
+					Room.GetTeam()
+					Room.GetScore()
+					Room.GetTeam()
+					Room.GetScore()
+					AngryPidge.SetScoreTeam1()
+					AngryPidge.SetScoreTeam2()
+					AngryPidge.SetTeamWin()
+					Client.sendEndGame()
+				Method: endGame() calls no method(s)
+				Method: getShootDone() calls no method(s)
+				Method: getFireDone() calls no method(s)
+				Method: getRoom() calls no method(s)
+				Method: fireReceive() calls no method(s)
+				Method: playerShootReceive() calls : 
+					List.add()
+				Method: EndGameReceive() calls : 
+					AngryPidge.SetScoreTeam1()
+					AngryPidge.SetScoreTeam2()
+					AngryPidge.SetTeamWin()
+				Method: MvtTargetReceive() calls : 
+					List.size()
+					List.get()
+					List.setX()
+					List.get()
+					List.setY()
+					List.get()
+					List.setZ()
+				Method: KillTargetReceive() calls : 
+					List.size()
+					List.size()
+					List.size()
+					List.get()
+					List.get()
+					List.addTarget()
+					List.get()
+					List.remove()
+				Method: OutTargetReceive() calls : 
+					List.size()
+					List.get()
+					List.remove()
+				Method: ChangeScoreReceive() calls : 
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.SetScore()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.SetScore()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.SetScore()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.SetScore()
+				Method: PlayerTurnReceive() calls : 
+					List.clear()
+					List.clear()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+				Method: isPlayerTurn() calls : 
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+					Room.GetTeam()
+					Room.GetPlayer()
+					Room.GetName()
+					Room.compareTo()
+				Method: PosForShootReceive() calls no method(s)
+				Method: PullReceive() calls : 
+					List.clear()
+					List.add()
+				Method: MarkReceive() calls : 
+					List.clear()
+					List.add()
+				Method: DoubleReceive() calls : 
+					List.clear()
+					List.add()
+					List.add()
+				Method: setWidthTarget() calls no method(s)
+				Method: setHeightTarget() calls no method(s)
+				Method: GetEndGame() calls no method(s)
+				Method: getNbBullet() calls no method(s)
+				Method: setShootEffect() calls no method(s)
+				Method: getFireEffect() calls no method(s)
+				Method: setFireEffect() calls no method(s)
+				Method: getShootEffect() calls no method(s)
+				Method: getListShootDone() calls no method(s)
+				Method: toString() calls : 
+					Room.values()
+					Room.GetTeam()
+					Room.GetPlayerList()
+					String.GetName()
+					Integer.toString()
+					List.size()
+					Integer.toString()
+					List.get()
+					List.getX()
+					Integer.toString()
+					List.get()
+					List.getY()
+					Integer.toString()
+					List.get()
+					List.getZ()
+					Integer.toString()
+		Coupling between classes:
+			Has called: Game.initTargetData() 1 time(s)
+			Has called: List.add() 11 time(s)
+			Has called: List.size() 12 time(s)
+			Has called: Math.random() 2 time(s)
+			Has called: List.get() 18 time(s)
+			Has called: LinkedList.add() 1 time(s)
+			Has called: List.remove() 7 time(s)
+			Has called: Integer.add() 2 time(s)
+			Has called: Integer.size() 1 time(s)
+			Has called: ?.size() 1 time(s)
+			Has called: ?.get() 1 time(s)
+			Has called: ?.add() 1 time(s)
+			Has called: Date.getTime() 7 time(s)
+			Has called: List.clear() 8 time(s)
+			Has called: Client.changeStation() 2 time(s)
+			Has called: Room.values() 6 time(s)
+			Has called: Room.GetTeam() 24 time(s)
+			Has called: Room.GetPlayerList() 6 time(s)
+			Has called: Date.GetName() 1 time(s)
+			Has called: Client.changePlayerTurn() 2 time(s)
+			Has called: ReentrantLock.lock() 2 time(s)
+			Has called: List.getX() 2 time(s)
+			Has called: List.getY() 2 time(s)
+			Has called: List.getZ() 2 time(s)
+			Has called: Client.killTarget() 1 time(s)
+			Has called: List.addTarget() 2 time(s)
+			Has called: Player.GetScore() 2 time(s)
+			Has called: Player.SetScore() 1 time(s)
+			Has called: Player.GetName() 1 time(s)
+			Has called: Client.changeScoreTeam() 1 time(s)
+			Has called: ReentrantLock.unlock() 2 time(s)
+			Has called: Game.createTarget() 1 time(s)
+			Has called: Date.get() 1 time(s)
+			Has called: Client.Fire() 3 time(s)
+			Has called: Target.updatePosition() 1 time(s)
+			Has called: Target.getX() 4 time(s)
+			Has called: Target.getY() 4 time(s)
+			Has called: Client.outTarget() 1 time(s)
+			Has called: Target.getZ() 2 time(s)
+			Has called: Client.mvtTarget() 2 time(s)
+			Has called: Game.Fire() 1 time(s)
+			Has called: String.GetName() 2 time(s)
+			Has called: List.GetName() 1 time(s)
+			Has called: Game.manageTarget() 1 time(s)
+			Has called: Game.nextPlayer() 1 time(s)
+			Has called: Game.waiting() 1 time(s)
+			Has called: Room.GetScore() 2 time(s)
+			Has called: AngryPidge.SetScoreTeam1() 2 time(s)
+			Has called: AngryPidge.SetScoreTeam2() 2 time(s)
+			Has called: AngryPidge.SetTeamWin() 2 time(s)
+			Has called: Client.sendEndGame() 1 time(s)
+			Has called: List.setX() 1 time(s)
+			Has called: List.setY() 1 time(s)
+			Has called: List.setZ() 1 time(s)
+			Has called: Room.GetPlayer() 16 time(s)
+			Has called: Room.GetName() 12 time(s)
+			Has called: Room.compareTo() 12 time(s)
+			Has called: Room.SetScore() 4 time(s)
+			Has called: Integer.toString() 5 time(s)
+
+	Class: NetworkMsg
+		Graph of direct calls between methods
+				Method: NetworkMsg() calls no method(s)
+				Method: arrayByteToSend() calls : 
+					msgHeader.ordinal()
+					NetworkMsg.intToBytes()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					System.arraycopy()
+					System.arraycopy()
+				Method: setHeader() calls no method(s)
+				Method: getHeader() calls no method(s)
+				Method: setData() calls no method(s)
+				Method: getData() calls no method(s)
+				Method: toString() calls : 
+					msgHeader.toString()
+				Method: toString() calls : 
+					NetworkMsg.toString()
+				Method: fromBytes() calls : 
+					NetworkMsg.bytesToInt()
+					System.arraycopy()
+					NetworkMsg.bytesToInt()
+					System.arraycopy()
+					System.arraycopy()
+					System.arraycopy()
+					msgHeader.values()
+					List.add()
+					System.arraycopy()
+				Method: bytesToInt() calls no method(s)
+				Method: intToBytes() calls : 
+					Integer.toString()
+					Integer.getBytes()
+		Coupling between classes:
+			Has called: msgHeader.ordinal() 1 time(s)
+			Has called: NetworkMsg.intToBytes() 2 time(s)
+			Has called: System.arraycopy() 8 time(s)
+			Has called: msgHeader.toString() 1 time(s)
+			Has called: NetworkMsg.toString() 1 time(s)
+			Has called: NetworkMsg.bytesToInt() 2 time(s)
+			Has called: msgHeader.values() 1 time(s)
+			Has called: List.add() 1 time(s)
+			Has called: Integer.toString() 1 time(s)
+			Has called: Integer.getBytes() 1 time(s)
+
+	Class: GameScore
+		Graph of direct calls between methods
+				Method: GameScore() calls no method(s)
+				Method: enter() calls : 
+					SoundManager.StopAllMusic()
+					SoundManager.PlaySound()
+				Method: init() calls : 
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					SoundManager.LoadSound()
+				Method: render() calls : 
+					Image.draw()
+					MouseOverArea.render()
+					GameScore.drawScoreTab()
+				Method: drawScoreTab() calls : 
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					AngryPidge.GetTeam()
+					AngryPidge.GetPlayer()
+					Image.draw()
+					Image.draw()
+					Image.draw()
+					Image.draw()
+					Graphics.setColor()
+					Graphics.scale()
+					Graphics.setAntiAlias()
+					GameContainer.getScreenWidth()
+					GameContainer.getScreenHeight()
+					Player.GetName()
+					Graphics.drawString()
+					Player.GetName()
+					Graphics.drawString()
+					Player.GetScore()
+					Integer.toString()
+					Graphics.drawString()
+					Player.GetScore()
+					Integer.toString()
+					Graphics.drawString()
+					Integer.toString()
+					Graphics.drawString()
+					GameContainer.getScreenWidth()
+					GameContainer.getScreenHeight()
+					Player.GetName()
+					Graphics.drawString()
+					Player.GetName()
+					Graphics.drawString()
+					Player.GetScore()
+					Integer.toString()
+					Graphics.drawString()
+					Player.GetScore()
+					Integer.toString()
+					Graphics.drawString()
+					Integer.toString()
+					Graphics.drawString()
+				Method: update() calls no method(s)
+				Method: componentActivated() calls : 
+					StateBasedGame.enterState()
+					SoundManager.PlayMusic()
+				Method: getID() calls no method(s)
+				Method: SetScoreTeam1() calls no method(s)
+				Method: SetScoreTeam2() calls no method(s)
+				Method: SetTeamWin() calls no method(s)
+				Method: GetScoreTeam1() calls no method(s)
+				Method: GetScoreTeam2() calls no method(s)
+				Method: GetTeamWin() calls no method(s)
+		Coupling between classes:
+			Has called: SoundManager.StopAllMusic() 1 time(s)
+			Has called: SoundManager.PlaySound() 1 time(s)
+			Has called: MouseOverArea.setNormalColor() 1 time(s)
+			Has called: MouseOverArea.setMouseOverColor() 1 time(s)
+			Has called: SoundManager.LoadSound() 1 time(s)
+			Has called: Image.draw() 5 time(s)
+			Has called: MouseOverArea.render() 1 time(s)
+			Has called: GameScore.drawScoreTab() 1 time(s)
+			Has called: AngryPidge.GetTeam() 4 time(s)
+			Has called: AngryPidge.GetPlayer() 4 time(s)
+			Has called: Graphics.setColor() 1 time(s)
+			Has called: Graphics.scale() 1 time(s)
+			Has called: Graphics.setAntiAlias() 1 time(s)
+			Has called: GameContainer.getScreenWidth() 2 time(s)
+			Has called: GameContainer.getScreenHeight() 2 time(s)
+			Has called: Player.GetName() 4 time(s)
+			Has called: Graphics.drawString() 10 time(s)
+			Has called: Player.GetScore() 4 time(s)
+			Has called: Integer.toString() 6 time(s)
+			Has called: StateBasedGame.enterState() 1 time(s)
+			Has called: SoundManager.PlayMusic() 1 time(s)
+
+	Class: SoundManager
+		Graph of direct calls between methods
+				Method: SoundManager() calls no method(s)
+				Method: GetCurrentSong() calls no method(s)
+				Method: SetMusicsVolume() calls : 
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.setVolume()
+				Method: SetMusicsPitch() calls no method(s)
+				Method: SetSoundsVolume() calls no method(s)
+				Method: SetSoundsPitch() calls no method(s)
+				Method: LoadSound() calls : 
+					HashMap.put()
+					ArrayList.add()
+					SlickException.printStackTrace()
+				Method: LoadMusic() calls : 
+					HashMap.put()
+					ArrayList.add()
+					SlickException.printStackTrace()
+				Method: PlayMusic() calls : 
+					HashMap.containsKey()
+					HashMap.get()
+					HashMap.play()
+				Method: PlayMusic() calls : 
+					HashMap.containsKey()
+					HashMap.get()
+					Music.loop()
+					Music.play()
+				Method: PlayMusic() calls : 
+					HashMap.containsKey()
+					HashMap.get()
+					Music.loop()
+					Music.play()
+				Method: PlaySound() calls : 
+					HashMap.containsKey()
+					HashMap.get()
+					HashMap.play()
+				Method: PlaySound() calls : 
+					HashMap.containsKey()
+					HashMap.get()
+					Sound.loop()
+					Sound.play()
+				Method: PlaySound() calls : 
+					HashMap.containsKey()
+					HashMap.get()
+					Sound.loop()
+					Sound.play()
+				Method: StopAllSound() calls : 
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.stop()
+				Method: StopAllMusic() calls : 
+					ArrayList.size()
+					ArrayList.get()
+					ArrayList.stop()
+		Coupling between classes:
+			Has called: ArrayList.size() 3 time(s)
+			Has called: ArrayList.get() 3 time(s)
+			Has called: ArrayList.setVolume() 1 time(s)
+			Has called: HashMap.put() 2 time(s)
+			Has called: ArrayList.add() 2 time(s)
+			Has called: SlickException.printStackTrace() 2 time(s)
+			Has called: HashMap.containsKey() 6 time(s)
+			Has called: HashMap.get() 6 time(s)
+			Has called: HashMap.play() 2 time(s)
+			Has called: Music.loop() 2 time(s)
+			Has called: Music.play() 2 time(s)
+			Has called: Sound.loop() 2 time(s)
+			Has called: Sound.play() 2 time(s)
+			Has called: ArrayList.stop() 2 time(s)
+
+	Class: NetworkClient
+		Graph of direct calls between methods
+				Method: NetworkClient() calls no method(s)
+				Method: close() calls : 
+					Socket.isClosed()
+					Socket.close()
+				Method: connect() calls no method(s)
+				Method: run() calls : 
+					Socket.getInputStream()
+					InputStream.read()
+					System.arraycopy()
+					System.arraycopy()
+					NetworkMsg.fromBytes()
+					Pair.size()
+					Pair.get()
+					NetworkClient.usingReceiveMsg()
+					Network.clientDisconnect()
+				Method: usingReceiveMsg() calls : 
+					Network.getGameState()
+					NetworkClient.usingReceiveMsgRoom()
+					Network.getGameState()
+					NetworkClient.usingReceiveMsgGame()
+				Method: respondeReceive() calls : 
+					NetworkMsg.getHeader()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					Network.getClient()
+					Network.setTeam()
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					Network.getClient()
+					Network.getYourInfo()
+					Network.SetName()
+					Network.getClient()
+					Network.setCurrentName()
+					Network.getClient()
+					Network.launchGame()
+				Method: runGameReceive() calls : 
+					Network.getClient()
+					Network.launchGame()
+				Method: usingReceiveMsgRoom() calls : 
+					NetworkMsg.getHeader()
+					NetworkClient.respondeReceive()
+					NetworkClient.respondeReceive()
+					NetworkClient.kickPlayerRoom()
+					NetworkClient.listPlayerRoom()
+					NetworkClient.changeNamePlayer()
+					NetworkClient.changeTeamPlayer()
+					NetworkClient.deletedRoom()
+					NetworkClient.runGameReceive()
+				Method: usingReceiveMsgGame() calls : 
+					NetworkMsg.getHeader()
+					NetworkClient.shootReceive()
+					NetworkClient.mvtTargetReceive()
+					NetworkClient.killTargetReceive()
+					NetworkClient.outTargetReceive()
+					NetworkClient.changeScoreReceive()
+					NetworkClient.playerTurnReceive()
+					NetworkClient.endGameReceive()
+					NetworkClient.posForShootReceive()
+					NetworkClient.kickPlayerRoom()
+					NetworkClient.kickPlayerRoom()
+					NetworkClient.pullReceive()
+					NetworkClient.markReceive()
+					NetworkClient.doubleReceive()
+					NetworkClient.fireReceive()
+				Method: mvtTargetReceive() calls : 
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					Network.getClient()
+					Double.valueOf()
+					Double.valueOf()
+					Double.valueOf()
+					Network.MvtTargetReceive()
+				Method: killTargetReceive() calls : 
+					Network.getClient()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					Network.KillTargetReceive()
+				Method: outTargetReceive() calls : 
+					Network.getClient()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					Network.OutTargetReceive()
+				Method: changeScoreReceive() calls : 
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					Network.getClient()
+					Network.ChangeScoreReceive()
+				Method: playerTurnReceive() calls : 
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					Network.getClient()
+					Network.PlayerTurnReceive()
+				Method: endGameReceive() calls : 
+					NetworkMsg.getData()
+					Network.getClient()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					Network.EndGameReceive()
+				Method: posForShootReceive() calls : 
+					Network.getClient()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					Network.PosForShootReceive()
+				Method: pullReceive() calls : 
+					Network.getClient()
+					Network.PullReceive()
+				Method: markReceive() calls : 
+					Network.getClient()
+					Network.MarkReceive()
+				Method: doubleReceive() calls : 
+					Network.getClient()
+					Network.DoubleReceive()
+				Method: fireReceive() calls : 
+					Network.getClient()
+					Network.fireReceive()
+				Method: shootReceive() calls : 
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					Network.getClient()
+					Network.playerShootReceive()
+				Method: kickPlayerRoom() calls : 
+					Network.clientDisconnect()
+				Method: changeNamePlayer() calls : 
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					Network.getClient()
+					Network.getYourInfo()
+					Network.SetName()
+					Network.getClient()
+					Network.setCurrentName()
+					Network.getClient()
+					Network.setFlagChangeName()
+				Method: changeTeamPlayer() calls : 
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					Network.setTeam()
+				Method: listPlayerRoom() calls : 
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					NetworkMsg.getData()
+					Network.getClient()
+					Network.updateRoom()
+				Method: sendShoot() calls : 
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					NetworkMsg.intToBytes()
+					System.arraycopy()
+					NetworkClient.sendMsg()
+				Method: deletedRoom() calls : 
+					Network.clientDisconnect()
+				Method: sendFire() calls : 
+					NetworkClient.sendMsg()
+				Method: runGame() calls : 
+					NetworkClient.sendMsg()
+				Method: changeName() calls : 
+					String.getBytes()
+					NetworkClient.sendMsg()
+				Method: changeTeam() calls : 
+					NetworkMsg.intToBytes()
+					NetworkClient.sendMsg()
+				Method: kickClient() calls : 
+					NetworkClient.sendMsg()
+					Network.clientDisconnect()
+				Method: sendMsg() calls : 
+					NetworkMsg.arrayByteToSend()
+					Socket.getOutputStream()
+					OutputStream.write()
+					Network.clientDisconnect()
+		Coupling between classes:
+			Has called: Socket.isClosed() 1 time(s)
+			Has called: Socket.close() 1 time(s)
+			Has called: Socket.getInputStream() 1 time(s)
+			Has called: InputStream.read() 1 time(s)
+			Has called: System.arraycopy() 4 time(s)
+			Has called: NetworkMsg.fromBytes() 1 time(s)
+			Has called: Pair.size() 1 time(s)
+			Has called: Pair.get() 1 time(s)
+			Has called: NetworkClient.usingReceiveMsg() 1 time(s)
+			Has called: Network.clientDisconnect() 5 time(s)
+			Has called: Network.getGameState() 2 time(s)
+			Has called: NetworkClient.usingReceiveMsgRoom() 1 time(s)
+			Has called: NetworkClient.usingReceiveMsgGame() 1 time(s)
+			Has called: NetworkMsg.getHeader() 3 time(s)
+			Has called: NetworkMsg.getData() 40 time(s)
+			Has called: NetworkMsg.bytesToInt() 19 time(s)
+			Has called: Network.getClient() 21 time(s)
+			Has called: Network.setTeam() 2 time(s)
+			Has called: Network.getYourInfo() 2 time(s)
+			Has called: Network.SetName() 2 time(s)
+			Has called: Network.setCurrentName() 2 time(s)
+			Has called: Network.launchGame() 2 time(s)
+			Has called: NetworkClient.respondeReceive() 2 time(s)
+			Has called: NetworkClient.kickPlayerRoom() 3 time(s)
+			Has called: NetworkClient.listPlayerRoom() 1 time(s)
+			Has called: NetworkClient.changeNamePlayer() 1 time(s)
+			Has called: NetworkClient.changeTeamPlayer() 1 time(s)
+			Has called: NetworkClient.deletedRoom() 1 time(s)
+			Has called: NetworkClient.runGameReceive() 1 time(s)
+			Has called: NetworkClient.shootReceive() 1 time(s)
+			Has called: NetworkClient.mvtTargetReceive() 1 time(s)
+			Has called: NetworkClient.killTargetReceive() 1 time(s)
+			Has called: NetworkClient.outTargetReceive() 1 time(s)
+			Has called: NetworkClient.changeScoreReceive() 1 time(s)
+			Has called: NetworkClient.playerTurnReceive() 1 time(s)
+			Has called: NetworkClient.endGameReceive() 1 time(s)
+			Has called: NetworkClient.posForShootReceive() 1 time(s)
+			Has called: NetworkClient.pullReceive() 1 time(s)
+			Has called: NetworkClient.markReceive() 1 time(s)
+			Has called: NetworkClient.doubleReceive() 1 time(s)
+			Has called: NetworkClient.fireReceive() 1 time(s)
+			Has called: Double.valueOf() 3 time(s)
+			Has called: Network.MvtTargetReceive() 1 time(s)
+			Has called: Network.KillTargetReceive() 1 time(s)
+			Has called: Network.OutTargetReceive() 1 time(s)
+			Has called: Network.ChangeScoreReceive() 1 time(s)
+			Has called: Network.PlayerTurnReceive() 1 time(s)
+			Has called: Network.EndGameReceive() 1 time(s)
+			Has called: Network.PosForShootReceive() 1 time(s)
+			Has called: Network.PullReceive() 1 time(s)
+			Has called: Network.MarkReceive() 1 time(s)
+			Has called: Network.DoubleReceive() 1 time(s)
+			Has called: Network.fireReceive() 1 time(s)
+			Has called: Network.playerShootReceive() 1 time(s)
+			Has called: Network.setFlagChangeName() 1 time(s)
+			Has called: Network.updateRoom() 1 time(s)
+			Has called: NetworkMsg.intToBytes() 3 time(s)
+			Has called: NetworkClient.sendMsg() 6 time(s)
+			Has called: String.getBytes() 1 time(s)
+			Has called: NetworkMsg.arrayByteToSend() 1 time(s)
+			Has called: Socket.getOutputStream() 1 time(s)
+			Has called: OutputStream.write() 1 time(s)
+
+	Class: ClientConnected
+		Graph of direct calls between methods
+				Method: close() calls : 
+					Socket.isClosed()
+					Socket.close()
+				Method: ClientConnected() calls no method(s)
+				Method: ClientConnected() calls no method(s)
+				Method: run() calls : 
+					Socket.getInputStream()
+					InputStream.read()
+					System.arraycopy()
+					System.arraycopy()
+					NetworkMsg.fromBytes()
+					Pair.size()
+					Pair.get()
+					ClientConnected.usingReceiveMsg()
+					NetworkServer.disconnectClient()
+				Method: usingReceiveMsg() calls : 
+					NetworkServer.getNetwork()
+					NetworkServer.getGameState()
+					ClientConnected.usingReceiveMsgRoom()
+					NetworkServer.getNetwork()
+					NetworkServer.getGameState()
+					ClientConnected.usingReceiveMsgGame()
+				Method: usingReceiveMsgRoom() calls : 
+					NetworkMsg.getHeader()
+					ClientConnected.changedTeam()
+					ClientConnected.changedName()
+					ClientConnected.runGame()
+					ClientConnected.deleteRoom()
+					ClientConnected.kickPlayer()
+				Method: usingReceiveMsgGame() calls : 
+					NetworkMsg.getHeader()
+					NetworkServer.Fire()
+					ClientConnected.shoot()
+				Method: shoot() calls : 
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkServer.Shoot()
+				Method: runGame() calls : 
+					NetworkServer.isHost()
+					NetworkServer.canRun()
+					ClientConnected.sendMsg()
+					ClientConnected.sendMsg()
+					NetworkServer.getClient()
+					NetworkServer.launchGame()
+				Method: deleteRoom() calls : 
+					NetworkServer.isHost()
+					ClientConnected.sendMsg()
+					ClientConnected.sendMsg()
+					NetworkServer.deleteRoom()
+				Method: kickPlayer() calls : 
+					NetworkServer.kickPlayer()
+					NetworkServer.updateRoomInfo()
+				Method: changedName() calls : 
+					NetworkMsg.getData()
+					String.length()
+					NetworkServer.nameAlreadyExist()
+					ClientConnected.sendMsg()
+					ClientConnected.sendMsg()
+					NetworkServer.updateRoomInfo()
+				Method: changedTeam() calls : 
+					NetworkMsg.getData()
+					NetworkMsg.bytesToInt()
+					NetworkServer.freePlaceInTeam()
+					ClientConnected.sendMsg()
+					NetworkServer.updateRoomInfo()
+					ClientConnected.sendMsg()
+				Method: sendMsg() calls : 
+					NetworkMsg.arrayByteToSend()
+					Socket.getOutputStream()
+					OutputStream.write()
+					NetworkServer.disconnectClient()
+				Method: getNameClient() calls no method(s)
+				Method: setNameClient() calls no method(s)
+				Method: getTeam() calls no method(s)
+				Method: setTeam() calls no method(s)
+				Method: getKeepRunning() calls no method(s)
+				Method: setKeepRunning() calls no method(s)
+		Coupling between classes:
+			Has called: Socket.isClosed() 1 time(s)
+			Has called: Socket.close() 1 time(s)
+			Has called: Socket.getInputStream() 1 time(s)
+			Has called: InputStream.read() 1 time(s)
+			Has called: System.arraycopy() 2 time(s)
+			Has called: NetworkMsg.fromBytes() 1 time(s)
+			Has called: Pair.size() 1 time(s)
+			Has called: Pair.get() 1 time(s)
+			Has called: ClientConnected.usingReceiveMsg() 1 time(s)
+			Has called: NetworkServer.disconnectClient() 2 time(s)
+			Has called: NetworkServer.getNetwork() 2 time(s)
+			Has called: NetworkServer.getGameState() 2 time(s)
+			Has called: ClientConnected.usingReceiveMsgRoom() 1 time(s)
+			Has called: ClientConnected.usingReceiveMsgGame() 1 time(s)
+			Has called: NetworkMsg.getHeader() 2 time(s)
+			Has called: ClientConnected.changedTeam() 1 time(s)
+			Has called: ClientConnected.changedName() 1 time(s)
+			Has called: ClientConnected.runGame() 1 time(s)
+			Has called: ClientConnected.deleteRoom() 1 time(s)
+			Has called: ClientConnected.kickPlayer() 1 time(s)
+			Has called: NetworkServer.Fire() 1 time(s)
+			Has called: ClientConnected.shoot() 1 time(s)
+			Has called: NetworkMsg.getData() 4 time(s)
+			Has called: NetworkMsg.bytesToInt() 3 time(s)
+			Has called: NetworkServer.Shoot() 1 time(s)
+			Has called: NetworkServer.isHost() 2 time(s)
+			Has called: NetworkServer.canRun() 1 time(s)
+			Has called: ClientConnected.sendMsg() 8 time(s)
+			Has called: NetworkServer.getClient() 1 time(s)
+			Has called: NetworkServer.launchGame() 1 time(s)
+			Has called: NetworkServer.deleteRoom() 1 time(s)
+			Has called: NetworkServer.kickPlayer() 1 time(s)
+			Has called: NetworkServer.updateRoomInfo() 3 time(s)
+			Has called: String.length() 1 time(s)
+			Has called: NetworkServer.nameAlreadyExist() 1 time(s)
+			Has called: NetworkServer.freePlaceInTeam() 1 time(s)
+			Has called: NetworkMsg.arrayByteToSend() 1 time(s)
+			Has called: Socket.getOutputStream() 1 time(s)
+			Has called: OutputStream.write() 1 time(s)
+
+	Class: Target
+		Graph of direct calls between methods
+				Method: Target() calls no method(s)
+				Method: updatePositionPull() calls no method(s)
+				Method: updatePositionMark() calls no method(s)
+				Method: updatePosition() calls : 
+					Target.updatePositionPull()
+					Target.updatePositionMark()
+				Method: is_fromPull() calls no method(s)
+				Method: getX() calls no method(s)
+				Method: setX() calls no method(s)
+				Method: getY() calls no method(s)
+				Method: setY() calls no method(s)
+				Method: getZ() calls no method(s)
+				Method: setZ() calls no method(s)
+		Coupling between classes:
+			Has called: Target.updatePositionPull() 1 time(s)
+			Has called: Target.updatePositionMark() 1 time(s)
+
+	Class: AngryPidge
+		Graph of direct calls between methods
+				Method: AngryPidge() calls no method(s)
+				Method: initStatesList() calls : 
+					AngryPidge.addState()
+					AngryPidge.addState()
+					AngryPidge.addState()
+					AngryPidge.addState()
+					AngryPidge.addState()
+					AngryPidge.addState()
+					AngryPidge.addState()
+				Method: main() calls : 
+					AppGameContainer.setDisplayMode()
+					AppGameContainer.setShowFPS()
+					AppGameContainer.setIcon()
+					AppGameContainer.start()
+					System.println()
+		Coupling between classes:
+			Has called: AngryPidge.addState() 7 time(s)
+			Has called: AppGameContainer.setDisplayMode() 1 time(s)
+			Has called: AppGameContainer.setShowFPS() 1 time(s)
+			Has called: AppGameContainer.setIcon() 1 time(s)
+			Has called: AppGameContainer.start() 1 time(s)
+			Has called: System.println() 1 time(s)
+
+	Class: GameMenu
+		Graph of direct calls between methods
+				Method: GameMenu() calls no method(s)
+				Method: getID() calls no method(s)
+				Method: componentActivated() calls : 
+					MenuPlay.reset()
+					StateBasedGame.enterState()
+					StateBasedGame.enterState()
+					StateBasedGame.enterState()
+					GameContainer.exit()
+				Method: init() calls : 
+					GameContainer.setMouseCursor()
+					SoundManager.LoadMusic()
+					SoundManager.SetMusicsVolume()
+					GameContainer.getWidth()
+					Image.getWidth()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					GameContainer.getWidth()
+					Image.getWidth()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					GameContainer.getWidth()
+					Image.getWidth()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					GameContainer.getWidth()
+					Image.getWidth()
+					MouseOverArea.setNormalColor()
+					MouseOverArea.setMouseOverColor()
+					SoundManager.PlayMusic()
+				Method: update() calls : 
+					GameContainer.getInput()
+					Input.isKeyPressed()
+					GameContainer.exit()
+				Method: render() calls : 
+					Image.draw()
+					GameContainer.getWidth()
+					Image.getWidth()
+					GameContainer.getHeight()
+					Image.getHeight()
+					Image.draw()
+					MouseOverArea.render()
+					MouseOverArea.render()
+					MouseOverArea.render()
+					MouseOverArea.render()
+		Coupling between classes:
+			Has called: MenuPlay.reset() 1 time(s)
+			Has called: StateBasedGame.enterState() 3 time(s)
+			Has called: GameContainer.exit() 2 time(s)
+			Has called: GameContainer.setMouseCursor() 1 time(s)
+			Has called: SoundManager.LoadMusic() 1 time(s)
+			Has called: SoundManager.SetMusicsVolume() 1 time(s)
+			Has called: GameContainer.getWidth() 5 time(s)
+			Has called: Image.getWidth() 5 time(s)
+			Has called: MouseOverArea.setNormalColor() 4 time(s)
+			Has called: MouseOverArea.setMouseOverColor() 4 time(s)
+			Has called: SoundManager.PlayMusic() 1 time(s)
+			Has called: GameContainer.getInput() 1 time(s)
+			Has called: Input.isKeyPressed() 1 time(s)
+			Has called: Image.draw() 2 time(s)
+			Has called: GameContainer.getHeight() 1 time(s)
+			Has called: Image.getHeight() 1 time(s)
+			Has called: MouseOverArea.render() 4 time(s)
