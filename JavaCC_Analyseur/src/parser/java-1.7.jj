@@ -233,6 +233,7 @@ public class JavaParser
             }
             if (file.isDirectory()) {
                 for (File childFile : file.listFiles()) {
+                  System.out.println("Fichier : " + childFile.getName());
                     grapher = null;
                     graphStack = new Stack<UmlGrapher>();
                     parser = new JavaParser(new java.io.FileInputStream(childFile));
@@ -269,6 +270,7 @@ public class JavaParser
   }
 
   private static void startClassInfo(String name) {
+    System.out.println("Class : " + name);
       var info = new ClassMethodInfo();
       info.setName(name);
       currentClassMethodInfo.push(info);
@@ -310,6 +312,7 @@ public class JavaParser
   }
 
   private static void endClassInfo() {
+    System.out.println("End class : " + varClass);
       if (currentClassMethodInfo.size() == 0) return;
       storage.removeClassVars(currentClassMethodInfo.peek().getName());
       classMethodInfos.add(currentClassMethodInfo.pop());
