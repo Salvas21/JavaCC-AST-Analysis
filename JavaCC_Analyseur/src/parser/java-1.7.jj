@@ -43,7 +43,8 @@ options {
   JAVA_UNICODE_ESCAPE = true;
   //ERROR_REPORTING = true;
   STATIC = false;
-//DEBUG_PARSER = true;
+  //DEBUG_PARSER = true;
+  //DEBUG_TOKEN_MANAGER=true;
 }
 
 PARSER_BEGIN(JavaParser)
@@ -270,7 +271,6 @@ public class JavaParser
   }
 
   private static void startClassInfo(String name) {
-    System.out.println("Class : " + name);
       var info = new ClassMethodInfo();
       info.setName(name);
       currentClassMethodInfo.push(info);
@@ -312,7 +312,6 @@ public class JavaParser
   }
 
   private static void endClassInfo() {
-    System.out.println("End class : " + varClass);
       if (currentClassMethodInfo.size() == 0) return;
       storage.removeClassVars(currentClassMethodInfo.peek().getName());
       classMethodInfos.add(currentClassMethodInfo.pop());
@@ -1313,9 +1312,7 @@ void Name():
 {
         varName=<IDENTIFIER>
         (
-              LOOKAHEAD( "." <IDENTIFIER> "(" ) "." methodName=<IDENTIFIER> Arguments() {addMethodCall(varName.toString(), methodName.toString());}
-            |
-              LOOKAHEAD(2) "." <IDENTIFIER>
+              LOOKAHEAD(2) "." methodName=<IDENTIFIER> [LOOKAHEAD("(") Arguments() {addMethodCall(varName.toString(), methodName.toString());}]
         )*
 }
 
